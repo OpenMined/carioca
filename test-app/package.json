@@ -5,11 +5,11 @@
   "author": "OpenMined <contact@openmined.org>",
   "license": "Apache-2.0",
   "scripts": {
-    "dev": "om-web-starter dev",
-    "build": "om-web-starter build"
+    "dev": "om-web-scripts dev",
+    "build": "om-web-scripts build"
   },
   "dependencies": {
-    "om-web-starter": "file:../web-starter",
+    "om-web-scripts": "file:../web-scripts",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }

@@ -1,0 +1,10 @@
+{
+  "name": "@openmined/web-generator",
+  "version": "0.1.0",
+  "description": "A generator function to create new React applications at OpenMined",
+  "author": "OpenMined <contact@openmined.org>",
+  "license": "Apache-2.0",
+  "bin": {
+    "om-web-generator": "./index.js"
+  }
+}

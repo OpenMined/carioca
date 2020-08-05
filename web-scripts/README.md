@@ -26,6 +26,10 @@ Open a new terminal
 
 BLAH BLAH
 
+### Typescript Support
+
+Add a `tsconfig.json` file to the root of your project.
+
 ## Support
 
 For support in using this library, please join the **#lib_omui** Slack channel. If you'd like to follow along with any code changes to the library, please join the **#code_omui** Slack channel. [Click here to join our Slack community!](https://slack.openmined.org)
@@ -36,7 +40,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests and documentation as appropriate.
 
-The test application is located in the `test-app` folder and the NPM package is located in the `web-starter` folder. Run `yarn install` in each to get all your dependencies and then run one of the specified scripts in the `package.json` file to get started.
+The test application is located in the `test-app` folder and the NPM package is located in the `web-scripts` folder. Run `yarn install` in each to get all your dependencies and then run one of the specified scripts in the `package.json` file to get started.
 
 ## License
 

@@ -1,15 +1,14 @@
 {
-  "name": "@openmined/web-starter",
+  "name": "@openmined/web-scripts",
   "version": "0.1.0",
-  "description": "A starter web application for any time you need to build a website or web application at OpenMined",
+  "description": "A series of build and dev scripts that allow you to build React applications at OpenMined",
   "author": "OpenMined <contact@openmined.org>",
   "license": "Apache-2.0",
   "bin": {
-    "om-web-starter": "./index.js"
+    "om-web-scripts": "./index.js"
   },
   "dependencies": {
     "@babel/core": "^7.11.1",
-    "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
     "babel-loader": "^8.1.0",
@@ -22,6 +21,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "style-loader": "^1.2.1",
+    "ts-loader": "^8.0.2",
+    "typescript": "^3.9.7",
     "url-loader": "^4.1.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
