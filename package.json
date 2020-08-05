@@ -1,0 +1,10 @@
+{
+  "name": "om-web-starter",
+  "version": "0.1.0",
+  "description": "OpenMined web starter",
+  "main": "index.js",
+  "repository": "https://github.com/OpenMined/om-web-starter.git",
+  "author": "OpenMined <contact@openmined.org>",
+  "license": "Apache-2.0",
+  "private": false
+}
