@@ -9,8 +9,8 @@
     "build": "om-web-starter build"
   },
   "dependencies": {
+    "om-web-starter": "file:../web-starter",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "om-web-starter": "file:../web-starter"
+    "react-dom": "^16.13.1"
   }
 }

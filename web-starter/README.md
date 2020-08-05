@@ -12,7 +12,7 @@
 A starter project that gives you everything you need to start building great looking websites and web applications for OpenMined. This project also powers our website, blog, and Grid Admin.
 
 - :fire: Full support for SPA (single-page applications) or SSR (server-side rendered) applications
-- :rocket: Auto-reloading and project building brought to you by [Razzle](https://github.com/jaredpalmer/razzle)
+- :rocket: Never worry about configuring Webpack for local development, builds, or deployments
 - :smile: Write in the latest ES6/7 Javascript, also includes full Typescript support
 - :star: Includes OpenMined's design system, [OMUI](https://github.com/openmined/omui), by default
 

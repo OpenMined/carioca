@@ -1,21 +1,24 @@
 #! /usr/bin/env node
-import { sync } from 'cross-spawn';
+const spawn = require('cross-spawn');
+const devConfig = require.resolve(`./src/dev.config.js`);
+const prodConfig = require.resolve(`./src/prod.config.js`);
 
 const [task] = process.argv.slice(2);
-const devConfig = require.resolve(`./config/dev.config.js`);
-const prodConfig = require.resolve(`./config/prod.config.js`);
 
 let result;
 
+// NOTE: These should be identical to the scripts in package.json
 switch (task) {
   case 'dev': {
-    result = sync('webpack-dev-server', ['--config', devConfig, '--progress'], {
-      stdio: 'inherit',
-    });
+    result = spawn.sync(
+      'webpack-dev-server',
+      ['--config', devConfig, '--progress'],
+      { stdio: 'inherit' }
+    );
     break;
   }
   case 'build': {
-    result = sync('webpack', ['--config', prodConfig, '--progress'], {
+    result = spawn.sync('webpack', ['--config', prodConfig, '--progress'], {
       stdio: 'inherit',
     });
     break;
@@ -24,8 +27,6 @@ switch (task) {
     console.log(`Unknown script "${task}".`);
 }
 
-if (result.signal) {
-  process.exit(1);
-}
+if (result.signal) process.exit(1);
 
 process.exit(result.status);
