@@ -1,0 +1,16 @@
+{
+  "name": "om-web-starter-test-app",
+  "version": "1.0.0",
+  "description": "The test app for the om-web-starter project",
+  "author": "OpenMined <contact@openmined.org>",
+  "license": "Apache-2.0",
+  "scripts": {
+    "dev": "om-web-starter dev",
+    "build": "om-web-starter build"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "om-web-starter": "file:../web-starter"
+  }
+}

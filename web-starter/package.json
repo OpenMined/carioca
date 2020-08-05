@@ -1,0 +1,17 @@
+{
+  "name": "@openmined/web-starter",
+  "version": "0.1.0",
+  "description": "A starter web application for any time you need to build a website or web application at OpenMined",
+  "author": "OpenMined <contact@openmined.org>",
+  "license": "Apache-2.0",
+  "bin": {
+    "om-web-starter": "./index.js"
+  },
+  "dependencies": {
+    "cross-spawn": "^7.0.3"
+  },
+  "peerDependencies": {
+    "react": ">=16.13.x",
+    "react-dom": ">=16.13.x"
+  }
+}
