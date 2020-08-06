@@ -4,6 +4,7 @@
   "description": "The test app for the om-web-starter project",
   "author": "OpenMined <contact@openmined.org>",
   "license": "Apache-2.0",
+  "main": "src/index.jsx",
   "scripts": {
     "dev": "om-web-scripts dev",
     "build": "om-web-scripts build"

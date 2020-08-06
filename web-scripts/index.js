@@ -1,8 +1,8 @@
 #! /usr/bin/env node
 const spawn = require('cross-spawn');
 
-const devConfig = require.resolve('./src/dev.config.js');
-const prodConfig = require.resolve('./src/prod.config.js');
+const devConfig = require.resolve('./src/webpack.dev.js');
+const prodConfig = require.resolve('./src/webpack.prod.js');
 
 const [task] = process.argv.slice(2);
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { render, hydrate } from 'react-dom';
 import App from './App';
 
 const renderMethod = module.hot ? render : hydrate;
 
-render(<App />, document.getElementById('root'));
+renderMethod(<App />, document.getElementById('root'));
