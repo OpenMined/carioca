@@ -9,7 +9,7 @@ module.exports = merge([
   config.setOutput(mode),
   config.resolveExtensions(),
   config.addJSSupport(),
-  config.addTSSupport(),
+  config.addTSSupport(mode),
   config.addCSSSupport(),
   config.addCSVSupport(),
   config.generateSourceMaps(mode),
@@ -17,6 +17,6 @@ module.exports = merge([
   config.setPeerDepsAsExternals(),
   config.cleanDirectory(),
   config.copyPublic(),
-  config.useHTMLTemplate(),
-  config.createChunks()
+  config.usepublicHTMLTemplate(),
+  config.createChunks(),
 ]);

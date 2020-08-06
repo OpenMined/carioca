@@ -18,6 +18,7 @@
     "css-loader": "^4.2.0",
     "csv-loader": "^3.0.3",
     "file-loader": "^6.0.0",
+    "fork-ts-checker-webpack-plugin": "^5.0.14",
     "html-webpack-plugin": "^4.3.0",
     "peer-deps-externals-webpack-plugin": "^1.0.4",
     "react": "^16.13.1",

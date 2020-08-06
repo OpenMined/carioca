@@ -9,12 +9,12 @@ module.exports = merge([
   config.setOutput(mode),
   config.resolveExtensions(),
   config.addJSSupport(),
-  config.addTSSupport(),
+  config.addTSSupport(mode),
   config.addCSSSupport(),
   config.addCSVSupport(),
   config.generateSourceMaps(mode),
   config.handleStaticAssetsImport(),
   config.copyPublic(),
-  config.useHTMLTemplate(),
-  config.startDevServer()
+  config.usepublicHTMLTemplate(),
+  config.startDevServer(),
 ]);
