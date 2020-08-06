@@ -1,7 +1,6 @@
 /*
 TODO:
 - Figure out a way to support building of path file in order to support typescript
-- Figure out prettier
 - Add Typescript support and test in a separate test-app
 - Create CLI for web-generator
 */
