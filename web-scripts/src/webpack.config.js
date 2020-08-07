@@ -66,7 +66,7 @@ module.exports = (mode, paths) => {
         },
         eslint:
           mode === 'production'
-            ? null
+            ? undefined
             : {
                 files: `${paths.sourceDirectory}/**/*.{ts,tsx,js,jsx}`,
                 options: {
