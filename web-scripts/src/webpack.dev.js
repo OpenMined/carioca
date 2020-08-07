@@ -1,20 +1,6 @@
-const { merge } = require('webpack-merge');
-const config = require('./webpack.config');
+const prepare = require('./index');
+const createConfig = require('./webpack.config');
 
-const mode = 'development';
+const paths = prepare();
 
-module.exports = merge([
-  config.setMode(mode),
-  config.setEntries(),
-  config.setOutput(mode),
-  config.resolveExtensions(),
-  config.addJSSupport(),
-  config.addTSSupport(mode),
-  config.addCSSSupport(),
-  config.addCSVSupport(),
-  config.generateSourceMaps(mode),
-  config.handleStaticAssetsImport(),
-  config.copyPublic(),
-  config.usepublicHTMLTemplate(),
-  config.startDevServer(),
-]);
+module.exports = createConfig('development', paths);
