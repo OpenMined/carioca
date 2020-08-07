@@ -7,7 +7,8 @@
   "main": "src/index.jsx",
   "scripts": {
     "dev": "om-web-scripts dev",
-    "build": "om-web-scripts build"
+    "build": "om-web-scripts build",
+    "test": "om-web-scripts test"
   },
   "dependencies": {
     "om-web-scripts": "file:../web-scripts",

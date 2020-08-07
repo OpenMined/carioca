@@ -92,6 +92,14 @@ const definePrettierConfigFile = (paths) =>
     resolveApp('.prettierrc')
   );
 
+const defineJestConfigFile = (paths) =>
+  defineConfigFile(
+    paths,
+    '.jestrc',
+    (template) => template,
+    resolveApp('.jestrc')
+  );
+
 module.exports = () => {
   // According to the appRoot, get our package.json files and parse it
   const packageFile = resolveApp('package.json');
@@ -115,6 +123,7 @@ module.exports = () => {
   paths.tsConfigPath = defineTSConfigFile(paths);
   paths.esLintConfigPath = defineESLintConfigFile(paths);
   paths.prettierConfigPath = definePrettierConfigFile(paths);
+  paths.jestConfigPath = defineJestConfigFile(paths);
 
   return paths;
 };
