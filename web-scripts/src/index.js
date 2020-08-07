@@ -2,6 +2,16 @@
 const fs = require('fs');
 const path = require('path');
 
+// Define the root of where this dependency is installed - very important!
+const appRoot = path.resolve(process.cwd());
+
+// Define two functions:
+// - One to resolve paths to the installation location
+// - Another to resolve paths to this project
+const resolveApp = (relativePath) => path.resolve(appRoot, relativePath);
+const resolveSelf = (relativePath) =>
+  path.resolve(__dirname, '..', relativePath);
+
 // A simple recursive function to ensure that a directory exists before writing a file
 const ensureDirectoryExistence = (filePath) => {
   const dirname = path.dirname(filePath);
@@ -15,7 +25,7 @@ const ensureDirectoryExistence = (filePath) => {
 // And the modifications that you want to perform to that file before copying
 const defineConfigFile = (paths, name, modifications, output) => {
   // Get the requested config file from the appRoot
-  const configFileAppPath = path.join(paths.appRoot, name);
+  const configFileAppPath = resolveApp(name);
 
   // Does the requested config file exist at the root?
   const configFileExists = fs.existsSync(configFileAppPath);
@@ -24,7 +34,7 @@ const defineConfigFile = (paths, name, modifications, output) => {
   if (configFileExists) return configFileAppPath;
 
   // Define our requested config template file
-  const configFileTemplatePath = path.join(__dirname, `../templates/${name}`);
+  const configFileTemplatePath = resolveSelf(`templates/${name}`);
 
   // Read that template file and parse it as JSON
   let configFileTemplate = JSON.parse(
@@ -37,7 +47,7 @@ const defineConfigFile = (paths, name, modifications, output) => {
   configFileTemplate = modifications(configFileTemplate);
 
   // Define the path where the output requested config file will be generated to
-  const outputConfigFilePath = output || path.join(__dirname, `../tmp/${name}`);
+  const outputConfigFilePath = output || resolveSelf(`tmp/${name}`);
 
   // Make sure that output path exists, if not, create the appropriate directories
   ensureDirectoryExistence(outputConfigFilePath);
@@ -57,7 +67,7 @@ const defineTSConfigFile = (paths) =>
     // Make sure to tell the template to include all files inside the source directory
     template.include = [
       `${paths.sourceDirectory}/**/*`,
-      path.join(__dirname, '../templates/declarations.d.ts'),
+      resolveSelf('templates/declarations.d.ts'),
     ];
 
     // Make sure to tell the template not to transpile the output directory
@@ -79,25 +89,25 @@ const definePrettierConfigFile = (paths) =>
     paths,
     '.prettierrc',
     (template) => template,
-    path.join(paths.appRoot, '.prettierrc')
+    resolveApp('.prettierrc')
   );
 
 module.exports = () => {
-  // Define the root of where this dependency is install - very important!
-  const appRoot = path.resolve(process.cwd());
-
   // According to the appRoot, get our package.json files and parse it
-  const packageFile = path.join(appRoot, 'package.json');
+  const packageFile = resolveApp('package.json');
   const parsedPackageFile = JSON.parse(fs.readFileSync(packageFile));
 
   // Define a couple paths to reuse throughout generating our final Webpack configuration files
   const paths = {
     appRoot,
-    sourceDirectory: path.join(appRoot, 'src'),
-    publicDirectory: path.join(appRoot, 'public'),
-    outputDirectory: path.join(appRoot, 'dist'),
-    sourceEntry: path.join(appRoot, parsedPackageFile.main),
-    publicHTMLTemplate: path.join(appRoot, 'public/index.html'),
+    ownRoot: resolveSelf('.'),
+    appPackage: packageFile,
+    envFile: resolveApp('.env'),
+    sourceDirectory: resolveApp('src'),
+    publicDirectory: resolveApp('public'),
+    outputDirectory: resolveApp('dist'),
+    sourceEntry: resolveApp(parsedPackageFile.main),
+    publicHTMLTemplate: resolveApp('public/index.html'),
   };
 
   // Check for the existence of various configuration files in the appRoot

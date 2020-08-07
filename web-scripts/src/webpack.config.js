@@ -1,25 +1,29 @@
 /*
 TODO:
-- Enable environment variables
-- Content security policies: https://webpack.js.org/guides/csp/
-- Support SSR
-- Upgrade to Webpack 5 when released
+- Add support for PWA's: https://webpack.js.org/guides/progressive-web-application/
+- Add support for content security policies: https://webpack.js.org/guides/csp/
+- Add support for SSR
 - Add support for Jest
 - Add support for OMUI
+- Upgrade to Webpack 5 when released
 - Create CLI for web-generator and make sure to include all the manifest files too
   (with a link on how to generate them)
 - When doing the CLI, make sure to also copy .gitignore, LICENSE, and README
+- Add prettier formatting and eslint to projects themselves
+- Write tests for everything
+- Write documentation for everything
 */
 
 // Import Webpack merge
 const { merge } = require('webpack-merge');
 
 // Import our Webpack plugins
+const Dotenv = require('dotenv-webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const PeerDepsExternalsPlugin = require('peer-deps-externals-webpack-plugin');
-const postcssPresetEnv = require('postcss-preset-env');
+const PostCSSPresetEnv = require('postcss-preset-env');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = (mode, paths) => {
@@ -54,6 +58,14 @@ module.exports = (mode, paths) => {
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
+  };
+
+  const addEnvironmentVariables = {
+    plugins: [
+      new Dotenv({
+        path: paths.envFile,
+      }),
+    ],
   };
 
   // Define the loader for compiling both Javascript and Typescript
@@ -103,7 +115,7 @@ module.exports = (mode, paths) => {
               loader: 'postcss-loader',
               options: {
                 ident: 'postcss',
-                plugins: () => [postcssPresetEnv()],
+                plugins: () => [PostCSSPresetEnv()],
               },
             },
           ],
@@ -221,6 +233,7 @@ module.exports = (mode, paths) => {
     setEntries,
     setOutput,
     resolveExtensions,
+    addEnvironmentVariables,
     addJSAndTSSupport,
     addCSSSupport,
     addCSVSupport,

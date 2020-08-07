@@ -17,6 +17,7 @@
     "cross-spawn": "^7.0.3",
     "css-loader": "^4.2.0",
     "csv-loader": "^3.0.3",
+    "dotenv-webpack": "^2.0.0",
     "eslint": "^7.6.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
