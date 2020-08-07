@@ -11,56 +11,76 @@ const ensureDirectoryExistence = (filePath) => {
   fs.mkdirSync(dirname);
 };
 
-// A function that will either locate an existing tsconfig.json file
-// Or create one, should one not exist
-const defineTSConfig = (paths) => {
-  // Get the tsconfig.json file from the appRoot
-  const tsConfigAppPath = path.join(paths.appRoot, 'tsconfig.json');
+// A function that takes all the current paths, the name of the file you want to copy
+// And the modifications that you want to perform to that file before copying
+const defineConfigFile = (paths, name, modifications, output) => {
+  // Get the requested config file from the appRoot
+  const configFileAppPath = path.join(paths.appRoot, name);
 
-  // Does the tsconfig.json file exist at the root?
-  const tsConfigExists = fs.existsSync(tsConfigAppPath);
+  // Does the requested config file exist at the root?
+  const configFileExists = fs.existsSync(configFileAppPath);
 
   // If it does then use it... if not, create one and return that path
-  if (tsConfigExists) return tsConfigAppPath;
-  else {
-    // Define our tsconfig.json template file
-    const tsConfigTemplatePath = path.join(
-      __dirname,
-      '../templates/tsconfig.json'
-    );
+  if (configFileExists) return configFileAppPath;
 
-    // Read that template file and parse it as JSON
-    const tempTSConfigTemplate = JSON.parse(
-      fs.readFileSync(tsConfigTemplatePath, {
-        encoding: 'utf-8',
-      })
-    );
+  // Define our requested config template file
+  const configFileTemplatePath = path.join(__dirname, `../templates/${name}`);
 
+  // Read that template file and parse it as JSON
+  let configFileTemplate = JSON.parse(
+    fs.readFileSync(configFileTemplatePath, {
+      encoding: 'utf-8',
+    })
+  );
+
+  // Run the provided modifications against that template
+  configFileTemplate = modifications(configFileTemplate);
+
+  // Define the path where the output requested config file will be generated to
+  const outputConfigFilePath = output || path.join(__dirname, `../tmp/${name}`);
+
+  // Make sure that output path exists, if not, create the appropriate directories
+  ensureDirectoryExistence(outputConfigFilePath);
+
+  // Write the file, based on the template to that output path
+  fs.writeFileSync(
+    outputConfigFilePath,
+    JSON.stringify(configFileTemplate, null, 2)
+  );
+
+  // Return the path to the newly-generate output requested config file
+  return outputConfigFilePath;
+};
+
+const defineTSConfigFile = (paths) =>
+  defineConfigFile(paths, 'tsconfig.json', (template) => {
     // Make sure to tell the template to include all files inside the source directory
-    tempTSConfigTemplate.include = [
+    template.include = [
       `${paths.sourceDirectory}/**/*`,
       path.join(__dirname, '../templates/declarations.d.ts'),
     ];
 
     // Make sure to tell the template not to transpile the output directory
-    tempTSConfigTemplate.exclude.push(paths.outputDirectory);
+    template.exclude.push(paths.outputDirectory);
 
-    // Define the path where the temp tsconfig.json file will be generated to
-    const tempTSConfigPath = path.join(__dirname, '../tmp/tsconfig.json');
+    return template;
+  });
 
-    // Make sure that temp path exists, if not, create the appropriate directories
-    ensureDirectoryExistence(tempTSConfigPath);
+const defineESLintConfigFile = (paths) =>
+  defineConfigFile(paths, '.eslintrc', (template) => {
+    // Tell ESLint where our tsconfig.json file is located
+    template.parserOptions.project = paths.tsConfigPath;
 
-    // Write the file, based on the template to that temp path
-    fs.writeFileSync(
-      tempTSConfigPath,
-      JSON.stringify(tempTSConfigTemplate, null, 2)
-    );
+    return template;
+  });
 
-    // Return the path to the newly-generate temp tsconfig.json file
-    return tempTSConfigPath;
-  }
-};
+const definePrettierConfigFile = (paths) =>
+  defineConfigFile(
+    paths,
+    '.prettierrc',
+    (template) => template,
+    path.join(paths.appRoot, '.prettierrc')
+  );
 
 module.exports = () => {
   // Define the root of where this dependency is install - very important!
@@ -80,9 +100,11 @@ module.exports = () => {
     publicHTMLTemplate: path.join(appRoot, 'public/index.html'),
   };
 
-  // Check for the existence of a tsconfig.json file in the appRoot
-  // If one does not exist, create one, and return its location
-  paths.tsConfigPath = defineTSConfig(paths);
+  // Check for the existence of various configuration files in the appRoot
+  // If they do not exist, create them, and return their location
+  paths.tsConfigPath = defineTSConfigFile(paths);
+  paths.esLintConfigPath = defineESLintConfigFile(paths);
+  paths.prettierConfigPath = definePrettierConfigFile(paths);
 
   return paths;
 };

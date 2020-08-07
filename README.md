@@ -11,24 +11,42 @@
 
 A starter project that gives you everything you need to start building great looking websites and web applications for OpenMined. This project also powers our website, blog, and Grid Admin.
 
-- :fire: Full support for SPA (single-page applications) or SSR (server-side rendered) applications
-- :rocket: Never worry about configuring Webpack for local development, builds, or deployments
-- :smile: Write in the latest ES6/7 Javascript, also includes full Typescript support
-- :star: Includes OpenMined's design system, [OMUI](https://github.com/openmined/omui), by default
+- :raised_hands: Zero-config development for React web applications
+- :rocket: Full support for SPA (single-page applications) or SSR (server-side rendered) applications
+- :couplekiss: Support for both Typescript and Javascript
+- :see_no_evil: Built-in ESLint and Prettier for code formatting suggestions
+- :fire: Full hot-module replacement with error overlays in development
+- :thumbsup: Never worry about configuring Webpack for local development, builds, or deployments
+- :muscle: Write in the latest Javascript (we support up to ES2020)
+- :rainbow: Includes OpenMined's design system, [OMUI](https://github.com/openmined/omui), by default
 
 ## Installation
 
-### Create a new project
+### Creating a new project
 
-Open a new terminal
+```bash
+npx @openmined/web-generator my-app
+cd my-app
+yarn dev # or "npm run dev" if that's your thing
+```
+
+### Adding to an existing project
+
+Using Yarn:
+
+```bash
+yarn add @openmined/web-scripts
+```
+
+Using NPM:
+
+```bash
+npm install @openmined/web-scripts
+```
 
 ## Usage
 
 BLAH BLAH
-
-### Typescript Support
-
-Add a `tsconfig.json` file to the root of your project.
 
 ## Support
 

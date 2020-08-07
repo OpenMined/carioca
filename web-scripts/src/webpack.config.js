@@ -1,13 +1,11 @@
 /*
 TODO:
-- Try replacing paths with context in Webpack
-- Have eslint fix things automatically
-- Figure out a way to support building of path file in order to support typescript (if necessary)
 - Enable environment variables
 - Content security policies: https://webpack.js.org/guides/csp/
-- Test typescript in a separate test-app
-- Add support for OMUI
+- Support SSR
 - Upgrade to Webpack 5 when released
+- Add support for Jest
+- Add support for OMUI
 - Create CLI for web-generator and make sure to include all the manifest files too
   (with a link on how to generate them)
 - When doing the CLI, make sure to also copy .gitignore, LICENSE, and README
@@ -58,48 +56,33 @@ module.exports = (mode, paths) => {
     },
   };
 
-  // Define the loader for compiling Javascript
-  const addJSSupport = {
-    module: {
-      rules: [
-        {
-          test: /\.jsx?$/,
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              ['@babel/preset-env', { modules: false }],
-              '@babel/preset-react',
-            ],
-            cacheDirectory: true,
-          },
-          exclude: /node_modules/,
+  // Define the loader for compiling both Javascript and Typescript
+  const addJSAndTSSupport = {
+    plugins: [
+      new ForkTsCheckerWebpackPlugin({
+        typescript: {
+          configFile: paths.tsConfigPath,
+          memoryLimit: 4096,
         },
-      ],
-    },
-  };
-
-  // Define the loader for compiling Typescript
-  const addTSSupport = {
-    // plugins: [
-    //   new ForkTsCheckerWebpackPlugin({
-    //     typescript: {
-    //       configFile: paths.tsConfigPath,
-    //       memoryLimit: 4096,
-    //     },
-    //     // eslint:
-    //     //   mode === 'production'
-    //     //     ? null
-    //     //     : { files: `${paths.sourceDirectory}/**/*.{ts,tsx,js,jsx}` },
-    //   }),
-    // ],
+        eslint:
+          mode === 'production'
+            ? null
+            : {
+                files: `${paths.sourceDirectory}/**/*.{ts,tsx,js,jsx}`,
+                options: {
+                  configFile: paths.esLintConfigPath,
+                },
+              },
+      }),
+    ],
     module: {
       rules: [
         {
-          test: /\.tsx?$/,
+          test: /\.(j|t)sx?$/,
           loader: 'ts-loader',
           options: {
             configFile: paths.tsConfigPath,
-            // transpileOnly: true,
+            transpileOnly: true,
           },
           exclude: /node_modules/,
         },
@@ -144,7 +127,7 @@ module.exports = (mode, paths) => {
 
   // Generate source maps - the type of sourcemap generated depends on the mode
   const generateSourceMaps = {
-    devtool: mode === 'production' ? 'source-map' : 'inline-source-map',
+    devtool: mode === 'production' ? 'source-map' : 'eval-source-map',
   };
 
   // Make sure to base-64 encode all images in the final JS source code
@@ -197,7 +180,7 @@ module.exports = (mode, paths) => {
       new HTMLWebpackPlugin({
         template: paths.publicHTMLTemplate,
         inject: 'body',
-        scriptLoading: 'defer', // NOTE: We should investigate if this causes problems
+        scriptLoading: 'defer',
       }),
     ],
   };
@@ -227,6 +210,8 @@ module.exports = (mode, paths) => {
       open: true,
       port: 3000,
       historyApiFallback: true,
+      overlay: true,
+      stats: 'minimal',
     },
   };
 
@@ -236,8 +221,7 @@ module.exports = (mode, paths) => {
     setEntries,
     setOutput,
     resolveExtensions,
-    addJSSupport,
-    addTSSupport,
+    addJSAndTSSupport,
     addCSSSupport,
     addCSVSupport,
     generateSourceMaps,
