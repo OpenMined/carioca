@@ -10,7 +10,7 @@ const PeerDepsExternalsPlugin = require('peer-deps-externals-webpack-plugin');
 const PostCSSPresetEnv = require('postcss-preset-env');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-module.exports = (mode, paths) => {
+module.exports = (project, mode, paths) => {
   // Set the Webpack context, should be the current working directory (the project)
   const setContext = { context: process.cwd() };
 
