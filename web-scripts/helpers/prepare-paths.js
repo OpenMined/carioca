@@ -21,6 +21,15 @@ const ensureDirectoryExistence = (filePath) => {
   fs.mkdirSync(dirname);
 };
 
+// A simple function for safely parsing JSON or JS files
+const safeJSONParse = (data) => {
+  try {
+    return { data: JSON.parse(data), isJSON: true };
+  } catch (e) {
+    return { data, isJSON: false };
+  }
+};
+
 // A function that takes all the current paths, the name of the file you want to copy
 // And the modifications that you want to perform to that file before copying
 const defineConfigFile = (paths, name, modifications, output) => {
@@ -37,14 +46,14 @@ const defineConfigFile = (paths, name, modifications, output) => {
   const configFileTemplatePath = resolveSelf(`templates/${name}`);
 
   // Read that template file and parse it as JSON
-  let configFileTemplate = JSON.parse(
+  let configFileTemplate = safeJSONParse(
     fs.readFileSync(configFileTemplatePath, {
       encoding: 'utf-8',
     })
   );
 
   // Run the provided modifications against that template
-  configFileTemplate = modifications(configFileTemplate);
+  configFileTemplate.data = modifications(configFileTemplate.data);
 
   // Define the path where the output requested config file will be generated to
   const outputConfigFilePath = output || resolveSelf(`tmp/${name}`);
@@ -55,7 +64,9 @@ const defineConfigFile = (paths, name, modifications, output) => {
   // Write the file, based on the template to that output path
   fs.writeFileSync(
     outputConfigFilePath,
-    JSON.stringify(configFileTemplate, null, 2)
+    configFileTemplate.isJSON
+      ? JSON.stringify(configFileTemplate.data, null, 2)
+      : configFileTemplate.data
   );
 
   // Return the path to the newly-generate output requested config file
@@ -93,29 +104,57 @@ const definePrettierConfigFile = (paths) =>
   );
 
 const defineJestConfigFile = (paths) =>
-  defineConfigFile(
-    paths,
-    '.jestrc',
-    (template) => template,
-    resolveApp('.jestrc')
-  );
+  defineConfigFile(paths, 'jest.config.js', (template) => {
+    // Define our matching string (in the jest.config.js template file)
+    const match = '/* CUSTOM JEST HERE */';
+
+    // Define our overrides
+    const custom = [
+      `rootDir: '${paths.appRoot}'`,
+      `globals: {
+        'ts-jest': {
+          tsConfig: '${paths.tsConfigPath}'
+        }
+      }`,
+      `collectCoverageFrom: [
+        '<rootDir>/${paths.relativePaths.sourceDirectory}/**/*.{js,jsx,ts,tsx}',
+        '!<rootDir>/node_modules/**/*',
+        '!<rootDir>/coverage/**/*',
+        '!<rootDir>/${paths.relativePaths.outputDirectory}/**/*'
+      ]`,
+    ];
+
+    // Find an replace the overrides at the matching string
+    template = template.replace(match, `${custom.join(',')},`);
+
+    return template;
+  });
 
 module.exports = () => {
   // According to the appRoot, get our package.json files and parse it
   const packageFile = resolveApp('package.json');
   const parsedPackageFile = JSON.parse(fs.readFileSync(packageFile));
 
+  const relativePaths = {
+    sourceDirectory: 'src',
+    publicDirectory: 'public',
+    outputDirectory: 'dist',
+  };
+
   // Define a couple paths to reuse throughout generating our final Webpack configuration files
   const paths = {
+    relativePaths,
     appRoot,
     ownRoot: resolveSelf('.'),
     appPackage: packageFile,
     envFile: resolveApp('.env'),
-    sourceDirectory: resolveApp('src'),
-    publicDirectory: resolveApp('public'),
-    outputDirectory: resolveApp('dist'),
+    sourceDirectory: resolveApp(relativePaths.sourceDirectory),
+    publicDirectory: resolveApp(relativePaths.publicDirectory),
+    outputDirectory: resolveApp(relativePaths.outputDirectory),
     sourceEntry: resolveApp(parsedPackageFile.main),
-    publicHTMLTemplate: resolveApp('public/index.html'),
+    publicHTMLTemplate: resolveApp(
+      `${relativePaths.publicDirectory}/index.html`
+    ),
   };
 
   // Check for the existence of various configuration files in the appRoot

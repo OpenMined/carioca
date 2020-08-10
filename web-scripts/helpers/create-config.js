@@ -1,6 +1,5 @@
 /*
 TODO:
-- Add support for Jest
 - Add support for SSR
 - Add support for OMUI
 - Create CLI for web-generator and make sure to include all the manifest files too

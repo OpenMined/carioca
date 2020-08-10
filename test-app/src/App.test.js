@@ -7,7 +7,7 @@ test('Homepage should have title', () => {
   const testRenderer = renderer.create(<App />);
   const rootElem = testRenderer.root;
 
-  expect(rootElem.findByProps({ className: 'home-title' }).children).toEqual([
-    'Welcome to OM Web Starter'
-  ]);
+  const pageTitle = rootElem.findByProps({ className: 'home-title' }).children.join('');
+
+  expect(pageTitle).toEqual('Welcome to OM Web Starter!');
 });

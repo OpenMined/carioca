@@ -37,6 +37,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1",
+    "sade": "^1.7.3",
     "style-loader": "^1.2.1",
     "ts-jest": "^26.1.4",
     "ts-loader": "^8.0.2",

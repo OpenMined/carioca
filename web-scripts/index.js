@@ -1,41 +1,69 @@
-#! /usr/bin/env node
-const spawn = require('cross-spawn');
+#!/usr/bin/env node
 
-const devConfig = require.resolve('./src/webpack.dev.js');
-const prodConfig = require.resolve('./src/webpack.prod.js');
+const sade = require('sade');
+const runCommand = require('./helpers/run-command');
+const pkg = require('./package.json');
+const prog = sade('om-web-scripts');
 
-const [task] = process.argv.slice(2);
+prog.version(pkg.version);
 
-let result;
-
-// TODO: Need to break this into multiple scripts files and call them individually (see Razzle)
-// TODO: Need to also ensure we're running prepare() before yarn test... don't know why testing isn't working
-// TODO: When running prepare(), make sure to eventually try to get jest working with a non-root .jestrc
-switch (task) {
-  case 'dev': {
-    result = spawn.sync(
-      'webpack-dev-server',
-      ['--config', devConfig, '--progress'],
-      { stdio: 'inherit' }
+prog
+  .command('build')
+  .describe('Build the application in production mode.')
+  .option(
+    '-t, --type',
+    'Change the application build type. Must be either `iso` or `spa`.',
+    'iso'
+  )
+  .action(() => {
+    runCommand(
+      'node',
+      [require.resolve('./scripts/build')].concat(process.argv.slice(3))
     );
-    break;
-  }
-  case 'build': {
-    result = spawn.sync('webpack', ['--config', prodConfig, '--progress'], {
-      stdio: 'inherit',
-    });
-    break;
-  }
-  case 'test': {
-    result = spawn.sync('jest', [], {
-      stdio: 'inherit',
-    });
-    break;
-  }
-  default:
-    console.log(`Unknown script "${task}".`);
-}
+  });
 
-if (result.signal) process.exit(1);
+prog
+  .command('dev')
+  .describe('Start the application in development mode.')
+  .option(
+    '-t, --type',
+    'Change the application build type. Must be either `iso` or `spa`.',
+    'iso'
+  )
+  .action(() => {
+    runCommand(
+      'node',
+      [require.resolve('./scripts/dev')].concat(process.argv.slice(3))
+    );
+  });
 
-process.exit(result.status);
+prog
+  .command('test')
+  .describe('Runs the test suite (supports all Jest CLI flags).')
+  .example('test --watch')
+  .example('test --coverage')
+  .example('test --passWithNoTests --verbose')
+  .action(() => {
+    runCommand(
+      'node',
+      [require.resolve('./scripts/test')].concat(process.argv.slice(3))
+    );
+  });
+
+// prog
+//   .version('1.0.5')
+//   .option('--global, -g', 'An example global flag')
+//   .option('-c, --config', 'Provide path to custom config', 'foo.config.js');
+
+// prog
+//   .command('build <src> <dest>')
+//   .describe('Build the source directory. Expects an `index.js` entry file.')
+//   .option('-o, --output', 'Change the name of the output file', 'bundle.js')
+//   .example('build src build --global --config my-conf.js')
+//   .example('build app public -o main.js')
+//   .action((src, dest, opts) => {
+//     console.log(`> building from ${src} to ${dest}`);
+//     console.log('> these are extra opts', opts);
+//   });
+
+prog.parse(process.argv);

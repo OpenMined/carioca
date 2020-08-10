@@ -8,7 +8,9 @@
   "scripts": {
     "dev": "om-web-scripts dev",
     "build": "om-web-scripts build",
-    "test": "om-web-scripts test"
+    "test": "om-web-scripts test",
+    "test:watch": "om-web-scripts test --watch",
+    "test:coverage": "om-web-scripts test --coverage"
   },
   "dependencies": {
     "om-web-scripts": "file:../web-scripts",
