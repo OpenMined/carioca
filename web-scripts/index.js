@@ -1,5 +1,22 @@
 #!/usr/bin/env node
 
+/*
+TODO:
+- Add support for SSR
+- Fix HMR
+- Add support for OMUI
+- Create CLI for web-generator and make sure to include all the manifest files too
+  (with a link on how to generate them)
+- When doing the CLI, make sure to also copy .gitignore, LICENSE, and README
+- Add prettier formatting and eslint to projects themselves
+- Add support for content security policies: https://webpack.js.org/guides/csp/
+- Add support for PWA's: https://webpack.js.org/guides/progressive-web-application/
+- Support internationalization and also PWA's over multiple origins: https://web.dev/multi-origin-pwas/
+- Upgrade to Webpack 5 when released
+- Write tests for everything
+- Write documentation for everything
+*/
+
 const sade = require('sade');
 const runCommand = require('./helpers/run-command');
 const pkg = require('./package.json');
