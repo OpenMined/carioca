@@ -8,3 +8,5 @@ node_modules
 tmp
 .env
 .env.*
+
+test-razzle-app

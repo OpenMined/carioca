@@ -2,44 +2,76 @@
 const { merge } = require('webpack-merge');
 
 // Import our Webpack plugins
-const Dotenv = require('dotenv-webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PeerDepsExternalsPlugin = require('peer-deps-externals-webpack-plugin');
 const PostCSSPresetEnv = require('postcss-preset-env');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-module.exports = (project, mode, paths) => {
+module.exports = (target, mode, intention, paths) => {
+  // Is is the client or the server?
+  const IS_CLIENT = target === 'web';
+  const IS_SERVER = target === 'node';
+
+  // Are we in development or production mode?
+  const IS_DEV = mode === 'development';
+  const IS_PROD = mode === 'production';
+
+  // Are we trying to run the app or make a build of it?
+  const IS_LIVE = intention === 'run';
+  const IS_BUILD = intention === 'build';
+
+  // Define the default port
+  // NOTE: The port for the server running live is PORT, the client is PORT + 1
+  const PORT = 3000;
+
+  // TODO: Check if this is necessary...
+  process.env.NODE_ENV = mode;
+
   // Set the Webpack context, should be the current working directory (the project)
   const setContext = { context: process.cwd() };
 
   // Set the Webpack mode, either "production" or "development"
   const setMode = { mode };
 
+  // Set the target, either "node" or "web"
+  const setTarget = { target };
+
   // Define the entry paths
   const setEntries = {
-    entry: {
-      client: [paths.sourceEntry],
-    },
+    entry: IS_CLIENT
+      ? { client: [paths.clientEntry] }
+      : { server: [paths.serverEntry] },
   };
 
   // Define the output paths - we will change the name of the file paths depending on the mode
-  const setOutput = {
-    output: {
-      filename:
-        mode === 'production'
-          ? '[name].[chunkhash:8].bundle.js'
-          : '[name].bundle.js',
-      path: paths.outputDirectory,
-      chunkFilename: '[name].[chunkhash:8].bundle.js',
-      publicPath: '/',
-    },
-  };
+  const setOutput = IS_SERVER
+    ? {
+        output: {
+          filename: '[name].js',
+          path: paths.outputDirectory,
+          libraryTarget: 'commonjs2',
+          publicPath: '/',
+        },
+      }
+    : {
+        output: {
+          filename: IS_BUILD
+            ? 'static/js/[name].[chunkhash:8].js'
+            : '[name].js',
+          chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js',
+          path: paths.outputClientDirectory,
+          publicPath: '/',
+        },
+      };
 
   // Make sure to resolve all files where Javascript code will exist (in some form)
   const resolveExtensions = {
     resolve: {
+      modules: ['node_modules', paths.appNodeModules],
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
   };
@@ -87,26 +119,41 @@ module.exports = (project, mode, paths) => {
   };
 
   // Define the loader for compiling CSS
-  const addCSSSupport = {
-    module: {
-      rules: [
-        {
-          test: /\.css$/,
-          use: [
-            'style-loader',
-            { loader: 'css-loader', options: { importLoaders: 1 } },
-            {
-              loader: 'postcss-loader',
-              options: {
-                ident: 'postcss',
-                plugins: () => [PostCSSPresetEnv()],
-              },
-            },
-          ],
-          exclude: /node_modules/,
+  const addCSSSupport = () => {
+    const cssRules = [
+      {
+        loader: 'css-loader',
+        options: { importLoaders: 1, exportOnlyLocals: IS_SERVER },
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          ident: 'postcss',
+          plugins: () => [PostCSSPresetEnv()],
         },
+      },
+    ];
+
+    if (IS_BUILD && IS_CLIENT) cssRules.unshift(MiniCssExtractPlugin.loader);
+    if (IS_LIVE && IS_CLIENT) cssRules.unshift('style-loader');
+
+    return {
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: cssRules,
+            exclude: /node_modules/,
+          },
+        ],
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: 'static/css/[name].[contenthash:8].css',
+          chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+        }),
       ],
-    },
+    };
   };
 
   // Define the loader for compiling CSV's and TSV's
@@ -123,7 +170,7 @@ module.exports = (project, mode, paths) => {
 
   // Generate source maps - the type of sourcemap generated depends on the mode
   const generateSourceMaps = {
-    devtool: mode === 'production' ? 'source-map' : 'eval-source-map',
+    devtool: IS_BUILD ? 'source-map' : 'eval-source-map',
   };
 
   // Make sure to base-64 encode all images in the final JS source code
@@ -136,7 +183,7 @@ module.exports = (project, mode, paths) => {
             loader: 'url-loader',
             options: {
               limit: 8000,
-              name: 'static/[name].[hash].[ext]',
+              name: 'static/media/[name].[hash:8].[ext]',
             },
           },
         },
@@ -149,9 +196,18 @@ module.exports = (project, mode, paths) => {
     plugins: [new PeerDepsExternalsPlugin()],
   };
 
-  // Clean the output directory (production only)
+  // Clean the output directory
   const cleanDirectory = {
-    plugins: [new CleanWebpackPlugin({ verbose: true })],
+    plugins: [new CleanWebpackPlugin()],
+  };
+
+  // Set up good node defaults
+  const setupNode = {
+    node: {
+      global: false,
+      __filename: false,
+      __dirname: false,
+    },
   };
 
   // Copy all files in the public directory, except for the index.html file
@@ -181,7 +237,7 @@ module.exports = (project, mode, paths) => {
     ],
   };
 
-  // Create various chunks of files and make sure to cache them appropriately (production only)
+  // Create various chunks of files and make sure to cache them appropriately
   const createChunks = {
     optimization: {
       moduleIds: 'hashed',
@@ -198,13 +254,12 @@ module.exports = (project, mode, paths) => {
     },
   };
 
-  // Start the hot-reloaded development server (development only)
+  // Start the hot-reloaded development server
   const startDevServer = {
     devServer: {
       compress: true,
       hot: true,
-      open: true,
-      port: 3000,
+      port: PORT + 1,
       historyApiFallback: true,
       overlay: true,
       stats: 'minimal',
@@ -214,6 +269,7 @@ module.exports = (project, mode, paths) => {
   const common = merge([
     setContext,
     setMode,
+    setTarget,
     setEntries,
     setOutput,
     resolveExtensions,
@@ -223,18 +279,26 @@ module.exports = (project, mode, paths) => {
     addCSVSupport,
     generateSourceMaps,
     handleStaticAssetsImport,
-    copyPublic,
-    usepublicHTMLTemplate,
   ]);
 
-  if (mode === 'development') {
-    return merge([common, startDevServer]);
-  } else if (mode === 'production') {
-    return merge([
-      common,
-      setPeerDepsAsExternals,
-      cleanDirectory,
-      createChunks,
-    ]);
+  if (IS_LIVE) {
+    if (IS_CLIENT) {
+      return merge([common, copyPublic, usepublicHTMLTemplate, startDevServer]);
+    } else if (IS_SERVER) {
+      return merge([common, setupNode, setPeerDepsAsExternals]);
+    }
+  } else if (IS_BUILD) {
+    if (IS_CLIENT) {
+      return merge([
+        common,
+        copyPublic,
+        usepublicHTMLTemplate,
+        setPeerDepsAsExternals,
+        cleanDirectory,
+        createChunks,
+      ]);
+    } else if (IS_SERVER) {
+      return merge([common, setupNode, setPeerDepsAsExternals]);
+    }
   }
 };

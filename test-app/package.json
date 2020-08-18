@@ -4,17 +4,25 @@
   "description": "The test app for the om-web-starter project",
   "author": "OpenMined <contact@openmined.org>",
   "license": "Apache-2.0",
-  "main": "src/index.jsx",
+  "om-web-scripts": {
+    "client": "src/client.jsx",
+    "main": "src/index.js",
+    "server": "src/server.js"
+  },
   "scripts": {
     "dev": "om-web-scripts dev",
     "build": "om-web-scripts build",
+    "build:dev": "om-web-scripts build:dev",
+    "start": "node dist/server.js",
     "test": "om-web-scripts test",
     "test:watch": "om-web-scripts test --watch",
     "test:coverage": "om-web-scripts test --coverage"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "om-web-scripts": "file:../web-scripts",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0"
   }
 }

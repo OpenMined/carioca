@@ -139,6 +139,7 @@ module.exports = () => {
     sourceDirectory: 'src',
     publicDirectory: 'public',
     outputDirectory: 'dist',
+    outputClientDirectory: 'dist/public',
   };
 
   // Define a couple paths to reuse throughout generating our final Webpack configuration files
@@ -147,11 +148,14 @@ module.exports = () => {
     appRoot,
     ownRoot: resolveSelf('.'),
     appPackage: packageFile,
+    appNodeModules: resolveApp('node_modules'),
     envFile: resolveApp('.env'),
     sourceDirectory: resolveApp(relativePaths.sourceDirectory),
     publicDirectory: resolveApp(relativePaths.publicDirectory),
     outputDirectory: resolveApp(relativePaths.outputDirectory),
-    sourceEntry: resolveApp(parsedPackageFile.main),
+    outputClientDirectory: resolveApp(relativePaths.outputClientDirectory),
+    clientEntry: resolveApp(parsedPackageFile['om-web-scripts'].client),
+    serverEntry: resolveApp(parsedPackageFile['om-web-scripts'].main),
     publicHTMLTemplate: resolveApp(
       `${relativePaths.publicDirectory}/index.html`
     ),

@@ -1,10 +1,20 @@
 #!/usr/bin/env node
 
 /*
+CURRENT ISSUES:
+- yarn build doesn't work but yarn build:dev does
+- Build script copies index.html incorrectly which results in wrong html file being served in yarn start
+- CSS is breaking the build, try removing the import './App.css' line
+
 TODO:
+- Add support for minifications in builds
+- Ensure that dotenv is configured correctly to not embed keys
 - Add support for SSR
 - Fix HMR
-- Add support for OMUI
+- Add support for SPA
+- Add metadata and favicon to public
+- Add support for Preact with compat
+- Add support for OMUI - consider releasing library as your own (competing with Razzle) and allowing for custom templates
 - Create CLI for web-generator and make sure to include all the manifest files too
   (with a link on how to generate them)
 - When doing the CLI, make sure to also copy .gitignore, LICENSE, and README
@@ -27,6 +37,21 @@ prog.version(pkg.version);
 prog
   .command('build')
   .describe('Build the application in production mode.')
+  .option(
+    '-t, --type',
+    'Change the application build type. Must be either `iso` or `spa`.',
+    'iso'
+  )
+  .action(() => {
+    runCommand(
+      'node',
+      [require.resolve('./scripts/build')].concat(process.argv.slice(3))
+    );
+  });
+
+prog
+  .command('build:dev')
+  .describe('Build the application in development mode.')
   .option(
     '-t, --type',
     'Change the application build type. Must be either `iso` or `spa`.',

@@ -25,8 +25,8 @@ A starter project that gives you everything you need to start building great loo
 ### Creating a new project
 
 ```bash
-npx @openmined/web-generator my-app
-cd my-app
+npx @openmined/web-generator test-razzle-app
+cd test-razzle-app
 yarn dev # or "npm run dev" if that's your thing
 ```
 
