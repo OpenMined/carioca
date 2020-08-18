@@ -295,7 +295,7 @@ module.exports = (target, mode, intention, paths) => {
         usepublicHTMLTemplate,
         setPeerDepsAsExternals,
         cleanDirectory,
-        createChunks,
+        IS_PROD ? createChunks : {},
       ]);
     } else if (IS_SERVER) {
       return merge([common, setupNode, setPeerDepsAsExternals]);

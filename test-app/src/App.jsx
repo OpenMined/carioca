@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './openmined.svg';
 
-import './App.css';
+// import './App.css';
 
 export default () => (
   <div className="home">

@@ -3,7 +3,8 @@
 /*
 CURRENT ISSUES:
 - yarn build doesn't work but yarn build:dev does
-- Build script copies index.html incorrectly which results in wrong html file being served in yarn start
+- Build script copies index.html, which it shouldn't
+- The root public directory is being served, instead of the dist public directory... which results in wrong html file being served in yarn start
 - CSS is breaking the build, try removing the import './App.css' line
 
 TODO:
