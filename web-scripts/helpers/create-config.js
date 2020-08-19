@@ -47,7 +47,7 @@ module.exports = (target, mode, intention, paths) => {
   const setEntries = {
     entry: IS_CLIENT
       ? { client: [paths.clientEntry] }
-      : { server: [paths.serverEntry] },
+      : { server: [paths.indexEntry] },
   };
 
   // Define the output paths - we will change the name of the file paths depending on the mode
@@ -90,6 +90,9 @@ module.exports = (target, mode, intention, paths) => {
 
     // Add the assets manifest file to ASSETS_MANIFEST
     parsed['ASSETS_MANIFEST'] = paths.assetsManifestFile;
+
+    // Add the index.html template file to HTML_TEMPLATE
+    parsed['HTML_TEMPLATE'] = paths.publicHTMLTemplate;
 
     // Convert all these env vars into something DefinePlugin can understand
     const final = Object.keys(parsed).reduce((env, key) => {

@@ -2,13 +2,15 @@
 
 /*
 TODO:
-- Insource index and server files
 - Add support for SSR on dev
 - Fix HMR
 - Add support for metadata and favicon
 - Add internationalization
 - Add support for SPA
+- Add options and examples to sade scripts
+- Clean up the logs and make them more attractive
 - Add support for Preact with compat
+- Document ALL the features and things this can do
 - Add support for OMUI - consider releasing library as your own (competing with Razzle) and allowing for custom templates
 - Create CLI for web-generator and make sure to include all the manifest files too
   (with a link on how to generate them)
@@ -33,11 +35,6 @@ prog.version(pkg.version);
 prog
   .command('build')
   .describe('Build the application in production mode.')
-  .option(
-    '-t, --type',
-    'Change the application build type. Must be either `iso` or `spa`.',
-    'iso'
-  )
   .action(() => {
     runCommand(
       'node',
@@ -48,11 +45,6 @@ prog
 prog
   .command('build:dev')
   .describe('Build the application in development mode.')
-  .option(
-    '-t, --type',
-    'Change the application build type. Must be either `iso` or `spa`.',
-    'iso'
-  )
   .action(() => {
     runCommand(
       'node',
@@ -63,11 +55,6 @@ prog
 prog
   .command('dev')
   .describe('Start the application in development mode.')
-  .option(
-    '-t, --type',
-    'Change the application build type. Must be either `iso` or `spa`.',
-    'iso'
-  )
   .action(() => {
     runCommand(
       'node',

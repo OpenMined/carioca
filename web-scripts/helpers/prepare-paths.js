@@ -130,7 +130,7 @@ const defineJestConfigFile = (paths) =>
     return template;
   });
 
-module.exports = () => {
+const preparePaths = () => {
   // According to the appRoot, get our package.json files and parse it
   const packageFile = resolveApp('package.json');
   const parsedPackageFile = JSON.parse(fs.readFileSync(packageFile));
@@ -148,6 +148,7 @@ module.exports = () => {
     appRoot,
     ownRoot: resolveSelf('.'),
     appPackage: packageFile,
+    appPackageParsed: parsedPackageFile,
     appNodeModules: resolveApp('node_modules'),
     envFile: resolveApp('.env'),
     sourceDirectory: resolveApp(relativePaths.sourceDirectory),
@@ -158,7 +159,8 @@ module.exports = () => {
       `${relativePaths.outputDirectory}/assets.json`
     ),
     clientEntry: resolveApp(parsedPackageFile['om-web-scripts'].client),
-    serverEntry: resolveApp(parsedPackageFile['om-web-scripts'].main),
+    indexEntry: resolveApp(parsedPackageFile['om-web-scripts'].main),
+    serverEntry: resolveApp(parsedPackageFile['om-web-scripts'].server),
     publicHTMLTemplate: resolveApp(
       `${relativePaths.publicDirectory}/index.html`
     ),
@@ -172,4 +174,10 @@ module.exports = () => {
   paths.jestConfigPath = defineJestConfigFile(paths);
 
   return paths;
+};
+
+module.exports = {
+  default: preparePaths,
+  resolveApp: resolveApp,
+  resolveSelf: resolveSelf,
 };
