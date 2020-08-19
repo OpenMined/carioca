@@ -5,9 +5,11 @@ import { renderToString } from 'react-dom/server';
 
 import App from './App';
 
+const assets = require(process.env.ASSETS_MANIFEST);
+
 export default express()
   .disable('x-powered-by')
-  .use(express.static('public'))
+  .use(express.static(process.env.PUBLIC_DIR))
   .get('/*', (req, res) => {
     const context = {};
     const markup = renderToString(
@@ -25,11 +27,16 @@ export default express()
           <head>
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
             <meta charset="utf-8" />
-            <title>Welcome to Razzle</title>
+            <title>Welcome to OM Web Starter</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
+            ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
           </head>
           <body>
             <div id="root">${markup}</div>
+
+            <script src="${assets.runtime.js}" defer></script>
+            <script src="${assets.vendors.js}" defer></script>
+            <script src="${assets.client.js}" defer></script>
           </body>
         </html>`
       );

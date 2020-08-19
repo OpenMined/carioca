@@ -2,9 +2,11 @@
 const { merge } = require('webpack-merge');
 
 // Import our Webpack plugins
+const AssetsWebpackPlugin = require('assets-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
+const CSSNano = require('cssnano');
+const { DefinePlugin } = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -25,8 +27,9 @@ module.exports = (target, mode, intention, paths) => {
   const IS_BUILD = intention === 'build';
 
   // Define the default port
-  // NOTE: The port for the server running live is PORT, the client is PORT + 1
+  // NOTE: The port for the server running live is PORT, the client (DEV_PORT) is PORT + 1
   const PORT = 3000;
+  const DEV_PORT = PORT + 1;
 
   // TODO: Check if this is necessary...
   process.env.NODE_ENV = mode;
@@ -64,7 +67,7 @@ module.exports = (target, mode, intention, paths) => {
             : '[name].js',
           chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js',
           path: paths.outputClientDirectory,
-          publicPath: '/',
+          publicPath: IS_LIVE ? `http://localhost:${DEV_PORT}/` : '/',
         },
       };
 
@@ -76,12 +79,28 @@ module.exports = (target, mode, intention, paths) => {
     },
   };
 
-  const addEnvironmentVariables = {
-    plugins: [
-      new Dotenv({
-        path: paths.envFile,
-      }),
-    ],
+  const addEnvironmentVariables = () => {
+    // Parse the .env file in the user's project
+    const { parsed } = require('dotenv').config({ path: paths.envFile });
+
+    // Add the correct server.js public directory to PUBLIC_DIR
+    parsed['PUBLIC_DIR'] = IS_BUILD
+      ? paths.relativePaths.outputClientDirectory
+      : paths.relativePaths.publicDirectory;
+
+    // Add the assets manifest file to ASSETS_MANIFEST
+    parsed['ASSETS_MANIFEST'] = paths.assetsManifestFile;
+
+    // Convert all these env vars into something DefinePlugin can understand
+    const final = Object.keys(parsed).reduce((env, key) => {
+      env[`process.env.${key}`] = JSON.stringify(parsed[key]);
+
+      return env;
+    }, {});
+
+    return {
+      plugins: [new DefinePlugin(final)],
+    };
   };
 
   // Define the loader for compiling both Javascript and Typescript
@@ -123,13 +142,13 @@ module.exports = (target, mode, intention, paths) => {
     const cssRules = [
       {
         loader: 'css-loader',
-        options: { importLoaders: 1, exportOnlyLocals: IS_SERVER },
+        options: { importLoaders: 1 },
       },
       {
         loader: 'postcss-loader',
         options: {
           ident: 'postcss',
-          plugins: () => [PostCSSPresetEnv()],
+          plugins: () => [PostCSSPresetEnv(), CSSNano({ preset: 'default' })],
         },
       },
     ];
@@ -168,13 +187,8 @@ module.exports = (target, mode, intention, paths) => {
     },
   };
 
-  // Generate source maps - the type of sourcemap generated depends on the mode
-  const generateSourceMaps = {
-    devtool: IS_BUILD ? 'source-map' : 'eval-source-map',
-  };
-
   // Make sure to base-64 encode all images in the final JS source code
-  const handleStaticAssetsImport = {
+  const addStaticAssetsSupport = {
     module: {
       rules: [
         {
@@ -189,6 +203,20 @@ module.exports = (target, mode, intention, paths) => {
         },
       ],
     },
+  };
+
+  // Generate source maps - the type of sourcemap generated depends on the mode
+  const generateSourceMaps = {
+    devtool: IS_BUILD ? 'source-map' : 'eval-source-map',
+  };
+
+  const createAssetsFile = {
+    plugins: [
+      new AssetsWebpackPlugin({
+        path: paths.outputDirectory,
+        filename: 'assets.json',
+      }),
+    ],
   };
 
   // Make sure to let Webpack know what peer dependencies we define, and mark them as external
@@ -227,7 +255,7 @@ module.exports = (target, mode, intention, paths) => {
   };
 
   // Inject the compiled scripts into the index.html file just before the final </body> tag
-  const usepublicHTMLTemplate = {
+  const usePublicHTMLTemplate = {
     plugins: [
       new HTMLWebpackPlugin({
         template: paths.publicHTMLTemplate,
@@ -259,7 +287,7 @@ module.exports = (target, mode, intention, paths) => {
     devServer: {
       compress: true,
       hot: true,
-      port: PORT + 1,
+      port: DEV_PORT,
       historyApiFallback: true,
       overlay: true,
       stats: 'minimal',
@@ -273,17 +301,23 @@ module.exports = (target, mode, intention, paths) => {
     setEntries,
     setOutput,
     resolveExtensions,
-    addEnvironmentVariables,
+    addEnvironmentVariables(),
     addJSAndTSSupport,
-    addCSSSupport,
+    addCSSSupport(),
     addCSVSupport,
+    addStaticAssetsSupport,
     generateSourceMaps,
-    handleStaticAssetsImport,
   ]);
 
   if (IS_LIVE) {
     if (IS_CLIENT) {
-      return merge([common, copyPublic, usepublicHTMLTemplate, startDevServer]);
+      return merge([
+        common,
+        createAssetsFile,
+        copyPublic,
+        usePublicHTMLTemplate,
+        startDevServer,
+      ]);
     } else if (IS_SERVER) {
       return merge([common, setupNode, setPeerDepsAsExternals]);
     }
@@ -291,11 +325,11 @@ module.exports = (target, mode, intention, paths) => {
     if (IS_CLIENT) {
       return merge([
         common,
+        createAssetsFile,
         copyPublic,
-        usepublicHTMLTemplate,
         setPeerDepsAsExternals,
         cleanDirectory,
-        IS_PROD ? createChunks : {},
+        createChunks,
       ]);
     } else if (IS_SERVER) {
       return merge([common, setupNode, setPeerDepsAsExternals]);

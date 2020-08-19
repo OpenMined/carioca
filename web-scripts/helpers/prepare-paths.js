@@ -154,6 +154,9 @@ module.exports = () => {
     publicDirectory: resolveApp(relativePaths.publicDirectory),
     outputDirectory: resolveApp(relativePaths.outputDirectory),
     outputClientDirectory: resolveApp(relativePaths.outputClientDirectory),
+    assetsManifestFile: resolveApp(
+      `${relativePaths.outputDirectory}/assets.json`
+    ),
     clientEntry: resolveApp(parsedPackageFile['om-web-scripts'].client),
     serverEntry: resolveApp(parsedPackageFile['om-web-scripts'].main),
     publicHTMLTemplate: resolveApp(
