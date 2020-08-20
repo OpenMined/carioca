@@ -2,8 +2,8 @@
 
 const mri = require('mri');
 
-const preparePaths = require('../helpers/prepare-paths').default;
-const runCommand = require('../helpers/run-command');
+const preparePaths = require('../scripts/prepare-paths').default;
+const runCommand = require('../scripts/run-command');
 
 const args = mri(process.argv.slice(2));
 const other = [];

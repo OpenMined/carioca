@@ -16,8 +16,8 @@
     "release": "lerna publish",
     "test": "lerna run test",
     "test-dev": "yarn workspace @carioca/test-app dev",
-    "test-build": "yarn workspace @carioca/test-app build",
-    "test-build:dev": "yarn workspace @carioca/test-app build:dev"
+    "test-build": "yarn workspace @carioca/test-app build && yarn workspace @carioca/test-app start",
+    "test-build:dev": "yarn workspace @carioca/test-app build:dev && yarn workspace @carioca/test-app start"
   },
   "devDependencies": {
     "lerna": "^3.22.1"

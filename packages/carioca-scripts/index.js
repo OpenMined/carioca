@@ -3,12 +3,11 @@
 /*
 ISSUES:
 - Dev only works with server.js in the app itself
-- Images "src" not matching with dev
 
 TODO:
-- Remove the html template plugin if possible
+- Try style loader for node to see if we can't get CSS working on dev
 - Make @carioca/server package to replace the server file
-- Add support for metadata and favicon
+- Add support for metadata via page component
 - Add internationalization
 - Add support for SPA
 - Add options and examples to sade scripts
@@ -16,9 +15,13 @@ TODO:
 - Clean up the logs and make them more attractive
 - Add support for Preact with compat
 - Document ALL the features and things this can do
+- Add acknoledgements
+- Change github description
+- Use auto-changelog
 - Create CLI for web-generator and make sure to include all the manifest files too
   (with a link on how to generate them)
 - When doing the CLI, make sure to also copy .gitignore, LICENSE, and README
+- Publish initial version
 - Add prettier formatting and eslint to projects themselves
 - Add support for content security policies: https://webpack.js.org/guides/csp/
 - Add support for PWA's: https://webpack.js.org/guides/progressive-web-application/
@@ -29,7 +32,7 @@ TODO:
 */
 
 const sade = require('sade');
-const runCommand = require('./helpers/run-command');
+const runCommand = require('./scripts/run-command');
 const pkg = require('./package.json');
 
 const prog = sade('@carioca/scripts');
@@ -42,7 +45,7 @@ prog
   .action(() => {
     runCommand(
       'node',
-      [require.resolve('./scripts/build')].concat(process.argv.slice(3))
+      [require.resolve('./bin/build')].concat(process.argv.slice(3))
     );
   });
 
@@ -52,7 +55,7 @@ prog
   .action(() => {
     runCommand(
       'node',
-      [require.resolve('./scripts/build')].concat(process.argv.slice(3))
+      [require.resolve('./bin/build')].concat(process.argv.slice(3))
     );
   });
 
@@ -62,7 +65,7 @@ prog
   .action(() => {
     runCommand(
       'node',
-      [require.resolve('./scripts/dev')].concat(process.argv.slice(3))
+      [require.resolve('./bin/dev')].concat(process.argv.slice(3))
     );
   });
 
@@ -75,7 +78,7 @@ prog
   .action(() => {
     runCommand(
       'node',
-      [require.resolve('./scripts/test')].concat(process.argv.slice(3))
+      [require.resolve('./bin/test')].concat(process.argv.slice(3))
     );
   });
 

@@ -8,7 +8,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 const CSSNano = require('cssnano');
 const { DefinePlugin } = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const nodeExternals = require('webpack-node-externals');
 const PeerDepsExternalsPlugin = require('peer-deps-externals-webpack-plugin');
@@ -220,6 +219,19 @@ module.exports = (target, mode, intention, paths) => {
       new AssetsWebpackPlugin({
         path: paths.outputDirectory,
         filename: /[^/]*$/.exec(paths.assetsManifestFile)[0],
+        processOutput: (assets) => {
+          const other = assets[''];
+
+          const flat = (list) =>
+            Object.keys(list).reduce((r, k) => {
+              if (Array.isArray(list[k])) return flat(list[k]);
+              return r.concat({ [/[^/]*$/.exec(list[k])[0]]: list[k] });
+            }, []);
+
+          assets.other = flat(other);
+
+          return JSON.stringify(assets);
+        },
       }),
     ],
   };
@@ -264,17 +276,6 @@ module.exports = (target, mode, intention, paths) => {
     ],
   };
 
-  // Inject the compiled scripts into the index.html file just before the final </body> tag
-  const usePublicHTMLTemplate = {
-    plugins: [
-      new HTMLWebpackPlugin({
-        template: paths.publicHTMLTemplate,
-        inject: 'body',
-        scriptLoading: 'defer',
-      }),
-    ],
-  };
-
   // Create various chunks of files and make sure to cache them appropriately
   const createChunks = {
     optimization: {
@@ -309,12 +310,7 @@ module.exports = (target, mode, intention, paths) => {
 
   if (IS_LIVE) {
     if (IS_CLIENT) {
-      return merge([
-        common,
-        createAssetsFile,
-        copyPublic,
-        usePublicHTMLTemplate,
-      ]);
+      return merge([common, createAssetsFile, copyPublic]);
     } else if (IS_SERVER) {
       return merge([
         common,

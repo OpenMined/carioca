@@ -1,11 +1,11 @@
-![Palm Tree](packages/carioca-test-app/src/palm-tree.png)
+![Carioca](packages/carioca-test-app/src/palm-tree.png)
+
+# Carioca
 
 ![Tests](https://img.shields.io/github/workflow/status/cereallarceny/carioca/Tests)
 ![Coverage](https://img.shields.io/codecov/c/github/cereallarceny/carioca)
 ![License](https://img.shields.io/github/license/cereallarceny/carioca)
 ![Version](https://img.shields.io/github/lerna-json/v/cereallarceny/carioca)
-
-# Carioca
 
 A starter project that gives you everything you need to start building great looking websites and web applications. This project also powers our website, blog, and Grid Admin.
 

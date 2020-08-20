@@ -2,8 +2,8 @@
 
 const UniversalHotReload = require('universal-hot-reload').default;
 
-const preparePaths = require('../helpers/prepare-paths').default;
-const createConfig = require('../helpers/create-config');
+const preparePaths = require('../scripts/prepare-paths').default;
+const createConfig = require('../scripts/create-config');
 
 const paths = preparePaths();
 

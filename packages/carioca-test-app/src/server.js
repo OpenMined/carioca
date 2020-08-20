@@ -21,6 +21,22 @@ const addJS = (html, script) =>
 const addMarkup = (html, markup) =>
   html.replace('<div id="root"></div>', `<div id="root">${markup}</div>`);
 
+const tailorMarkup = (markup) => {
+  console.log(assets.other, markup);
+  assets.other.forEach((asset) => {
+    const key = Object.keys(asset)[0];
+    const value = asset[key];
+
+    ['href', 'src'].forEach((attr) => {
+      const regex = new RegExp(`${attr}=\"([^"]*${key})\"`);
+
+      markup = markup.replace(regex, `${attr}="${value}"`);
+    });
+  });
+
+  return markup;
+};
+
 const server = express()
   .disable('x-powered-by')
   .use(express.static(process.env.PUBLIC_DIR))
@@ -47,6 +63,9 @@ const server = express()
       if (assets.runtime) finalHTML = addJS(finalHTML, assets.runtime.js);
       if (assets.vendors) finalHTML = addJS(finalHTML, assets.vendors.js);
       if (assets.main.js) finalHTML = addJS(finalHTML, assets.main.js);
+
+      // In dev mode, we need to prefix all assets with the appropriate address
+      finalHTML = tailorMarkup(finalHTML);
 
       res.status(200).send(finalHTML);
     }

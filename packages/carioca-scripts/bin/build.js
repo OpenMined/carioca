@@ -3,8 +3,8 @@
 const fs = require('fs');
 const webpack = require('webpack');
 
-const preparePathsHelper = require('../helpers/prepare-paths');
-const createConfig = require('../helpers/create-config');
+const preparePathsHelper = require('../scripts/prepare-paths');
+const createConfig = require('../scripts/create-config');
 
 const preparePaths = preparePathsHelper.default;
 const resolveApp = preparePathsHelper.resolveApp;
