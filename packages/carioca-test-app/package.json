@@ -1,0 +1,28 @@
+{
+  "name": "@carioca/test-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The test app for the carioca project",
+  "author": "Patrick Cason <me@patrickcason.com>",
+  "license": "Apache-2.0",
+  "carioca": {
+    "client": "src/client.jsx",
+    "server": "src/server.js"
+  },
+  "scripts": {
+    "dev": "carioca dev",
+    "build": "carioca build",
+    "build:dev": "carioca build:dev",
+    "start": "node dist/server.js",
+    "test": "carioca test",
+    "test:watch": "carioca test --watch",
+    "test:coverage": "carioca test --coverage"
+  },
+  "dependencies": {
+    "@carioca/scripts": "file:../carioca-scripts",
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0"
+  }
+}

@@ -158,8 +158,8 @@ const preparePaths = () => {
     assetsManifestFile: resolveApp(
       `${relativePaths.outputDirectory}/assets.json`
     ),
-    clientEntry: resolveApp(parsedPackageFile['om-web-scripts'].client),
-    serverEntry: resolveApp(parsedPackageFile['om-web-scripts'].server),
+    clientEntry: resolveApp(parsedPackageFile['carioca'].client),
+    serverEntry: resolveApp(parsedPackageFile['carioca'].server),
     publicHTMLTemplate: resolveApp(
       `${relativePaths.publicDirectory}/index.html`
     ),

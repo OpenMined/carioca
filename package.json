@@ -1,0 +1,25 @@
+{
+  "name": "carioca",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "author": "Patrick Cason <me@patrickcason.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cereallarceny/carioca.git"
+  },
+  "scripts": {
+    "bootstrap": "yarn install && lerna bootstrap --use-workspaces",
+    "clean": "lerna clean --yes && rm -rf node_modules",
+    "release": "lerna publish",
+    "test": "lerna run test",
+    "test-dev": "yarn workspace @carioca/test-app dev",
+    "test-build": "yarn workspace @carioca/test-app build",
+    "test-build:dev": "yarn workspace @carioca/test-app build:dev"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
+}

@@ -1,19 +1,21 @@
 #!/usr/bin/env node
 
 /*
-CURRENT ISSUES:
+ISSUES:
 - Dev only works with server.js in the app itself
+- Images "src" not matching with dev
 
 TODO:
 - Remove the html template plugin if possible
+- Make @carioca/server package to replace the server file
 - Add support for metadata and favicon
 - Add internationalization
 - Add support for SPA
 - Add options and examples to sade scripts
+- Add support for custom templates
 - Clean up the logs and make them more attractive
 - Add support for Preact with compat
 - Document ALL the features and things this can do
-- Add support for OMUI - consider releasing library as your own (competing with Razzle) and allowing for custom templates
 - Create CLI for web-generator and make sure to include all the manifest files too
   (with a link on how to generate them)
 - When doing the CLI, make sure to also copy .gitignore, LICENSE, and README
@@ -30,7 +32,7 @@ const sade = require('sade');
 const runCommand = require('./helpers/run-command');
 const pkg = require('./package.json');
 
-const prog = sade('om-web-scripts');
+const prog = sade('@carioca/scripts');
 
 prog.version(pkg.version);
 

@@ -1,11 +1,11 @@
 {
-  "name": "@openmined/web-scripts",
+  "name": "@carioca/scripts",
   "version": "0.1.0",
-  "description": "A series of build and dev scripts that allow you to build React applications at OpenMined",
-  "author": "OpenMined <contact@openmined.org>",
+  "description": "A series of build and dev scripts that allow you to build React applications",
+  "author": "Patrick Cason <me@patrickcason.com>",
   "license": "Apache-2.0",
   "bin": {
-    "om-web-scripts": "./index.js"
+    "carioca": "./index.js"
   },
   "dependencies": {
     "@types/jest": "^26.0.9",

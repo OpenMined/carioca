@@ -21,7 +21,7 @@ const addJS = (html, script) =>
 const addMarkup = (html, markup) =>
   html.replace('<div id="root"></div>', `<div id="root">${markup}</div>`);
 
-export default express()
+const server = express()
   .disable('x-powered-by')
   .use(express.static(process.env.PUBLIC_DIR))
   .get('/*', (req, res) => {
@@ -51,3 +51,7 @@ export default express()
       res.status(200).send(finalHTML);
     }
   });
+
+export default server.listen(3000, () => {
+  console.log('Listening...');
+});

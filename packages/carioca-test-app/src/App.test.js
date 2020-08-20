@@ -9,5 +9,5 @@ test('Homepage should have title', () => {
 
   const pageTitle = rootElem.findByProps({ className: 'home-title' }).children.join('');
 
-  expect(pageTitle).toEqual('Welcome to OM Web Starter!');
+  expect(pageTitle).toEqual('Welcome to Carioca Test App!');
 });

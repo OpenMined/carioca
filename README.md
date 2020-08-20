@@ -1,15 +1,13 @@
-![foobar-logo](https://github.com/OpenMined/design-assets/blob/master/logos/OM/horizontal-primary-trans.png)
+![Palm Tree](packages/carioca-test-app/src/palm-tree.png)
 
-![Tests](https://img.shields.io/github/workflow/status/OpenMined/om-web-starter/Tests)
-![Coverage](https://img.shields.io/codecov/c/github/OpenMined/om-web-starter)
-![Downloads](https://img.shields.io/npm/dw/@openmined/web-starter)
-![License](https://img.shields.io/github/license/OpenMined/om-web-starter)
-![Version](https://img.shields.io/npm/v/@openmined/web-starter)
-![OpenCollective](https://img.shields.io/opencollective/all/openmined)
+![Tests](https://img.shields.io/github/workflow/status/cereallarceny/carioca/Tests)
+![Coverage](https://img.shields.io/codecov/c/github/cereallarceny/carioca)
+![License](https://img.shields.io/github/license/cereallarceny/carioca)
+![Version](https://img.shields.io/github/lerna-json/v/cereallarceny/carioca)
 
-# OM Web Starter
+# Carioca
 
-A starter project that gives you everything you need to start building great looking websites and web applications for OpenMined. This project also powers our website, blog, and Grid Admin.
+A starter project that gives you everything you need to start building great looking websites and web applications. This project also powers our website, blog, and Grid Admin.
 
 - :raised_hands: Zero-config development for React web applications
 - :rocket: Full support for SPA (single-page applications) or SSR (server-side rendered) applications
@@ -18,14 +16,13 @@ A starter project that gives you everything you need to start building great loo
 - :fire: Full hot-module replacement with error overlays in development
 - :thumbsup: Never worry about configuring Webpack for local development, builds, or deployments
 - :muscle: Write in the latest Javascript (we support up to ES2020)
-- :rainbow: Includes OpenMined's design system, [OMUI](https://github.com/openmined/omui), by default
 
 ## Installation
 
 ### Creating a new project
 
 ```bash
-npx @openmined/web-generator test-razzle-app
+npx @carioca/generator test-razzle-app
 cd test-razzle-app
 yarn dev # or "npm run dev" if that's your thing
 ```
@@ -35,22 +32,18 @@ yarn dev # or "npm run dev" if that's your thing
 Using Yarn:
 
 ```bash
-yarn add @openmined/web-scripts
+yarn add @carioca/scripts
 ```
 
 Using NPM:
 
 ```bash
-npm install @openmined/web-scripts
+npm install @carioca/scripts
 ```
 
 ## Usage
 
 BLAH BLAH
-
-## Support
-
-For support in using this library, please join the **#lib_omui** Slack channel. If you'd like to follow along with any code changes to the library, please join the **#code_omui** Slack channel. [Click here to join our Slack community!](https://slack.openmined.org)
 
 ## Contributing
 

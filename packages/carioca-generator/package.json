@@ -1,0 +1,7 @@
+{
+  "name": "@carioca/generator",
+  "version": "0.1.0",
+  "description": "A generator function to create new React applications",
+  "author": "Patrick Cason <me@patrickcason.com>",
+  "license": "Apache-2.0"
+}
