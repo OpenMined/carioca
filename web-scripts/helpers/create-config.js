@@ -10,6 +10,7 @@ const { DefinePlugin } = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const nodeExternals = require('webpack-node-externals');
 const PeerDepsExternalsPlugin = require('peer-deps-externals-webpack-plugin');
 const PostCSSPresetEnv = require('postcss-preset-env');
 
@@ -45,16 +46,14 @@ module.exports = (target, mode, intention, paths) => {
 
   // Define the entry paths
   const setEntries = {
-    entry: IS_CLIENT
-      ? { client: [paths.clientEntry] }
-      : { server: [paths.indexEntry] },
+    entry: IS_CLIENT ? [paths.clientEntry] : [paths.serverEntry],
   };
 
   // Define the output paths - we will change the name of the file paths depending on the mode
   const setOutput = IS_SERVER
     ? {
         output: {
-          filename: '[name].js',
+          filename: 'server.js',
           path: paths.outputDirectory,
           libraryTarget: 'commonjs2',
           publicPath: '/',
@@ -64,7 +63,7 @@ module.exports = (target, mode, intention, paths) => {
         output: {
           filename: IS_BUILD
             ? 'static/js/[name].[chunkhash:8].js'
-            : '[name].js',
+            : 'bundle.js',
           chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js',
           path: paths.outputClientDirectory,
           publicPath: IS_LIVE ? `http://localhost:${DEV_PORT}/` : '/',
@@ -86,7 +85,7 @@ module.exports = (target, mode, intention, paths) => {
     // Add the correct server.js public directory to PUBLIC_DIR
     parsed['PUBLIC_DIR'] = IS_BUILD
       ? paths.relativePaths.outputClientDirectory
-      : paths.relativePaths.publicDirectory;
+      : paths.relativePaths.outputDirectory;
 
     // Add the assets manifest file to ASSETS_MANIFEST
     parsed['ASSETS_MANIFEST'] = paths.assetsManifestFile;
@@ -213,11 +212,12 @@ module.exports = (target, mode, intention, paths) => {
     devtool: IS_BUILD ? 'source-map' : 'eval-source-map',
   };
 
+  // Create a file that contains links to all the built assets so that we can embed them via SSR
   const createAssetsFile = {
     plugins: [
       new AssetsWebpackPlugin({
         path: paths.outputDirectory,
-        filename: 'assets.json',
+        filename: /[^/]*$/.exec(paths.assetsManifestFile)[0],
       }),
     ],
   };
@@ -225,6 +225,11 @@ module.exports = (target, mode, intention, paths) => {
   // Make sure to let Webpack know what peer dependencies we define, and mark them as external
   const setPeerDepsAsExternals = {
     plugins: [new PeerDepsExternalsPlugin()],
+  };
+
+  // Make sure Node knows to add node_modules to the list of externals
+  const setNodeExternals = {
+    externals: [nodeExternals()],
   };
 
   // Clean the output directory
@@ -285,18 +290,6 @@ module.exports = (target, mode, intention, paths) => {
     },
   };
 
-  // Start the hot-reloaded development server
-  const startDevServer = {
-    devServer: {
-      compress: true,
-      hot: true,
-      port: DEV_PORT,
-      historyApiFallback: true,
-      overlay: true,
-      stats: 'minimal',
-    },
-  };
-
   const common = merge([
     setContext,
     setMode,
@@ -319,10 +312,14 @@ module.exports = (target, mode, intention, paths) => {
         createAssetsFile,
         copyPublic,
         usePublicHTMLTemplate,
-        startDevServer,
       ]);
     } else if (IS_SERVER) {
-      return merge([common, setupNode, setPeerDepsAsExternals]);
+      return merge([
+        common,
+        setupNode,
+        setPeerDepsAsExternals,
+        setNodeExternals,
+      ]);
     }
   } else if (IS_BUILD) {
     if (IS_CLIENT) {

@@ -159,7 +159,6 @@ const preparePaths = () => {
       `${relativePaths.outputDirectory}/assets.json`
     ),
     clientEntry: resolveApp(parsedPackageFile['om-web-scripts'].client),
-    indexEntry: resolveApp(parsedPackageFile['om-web-scripts'].main),
     serverEntry: resolveApp(parsedPackageFile['om-web-scripts'].server),
     publicHTMLTemplate: resolveApp(
       `${relativePaths.publicDirectory}/index.html`

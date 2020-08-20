@@ -6,7 +6,6 @@
   "license": "Apache-2.0",
   "om-web-scripts": {
     "client": "src/client.jsx",
-    "main": "src/index.js",
     "server": "src/server.js"
   },
   "scripts": {

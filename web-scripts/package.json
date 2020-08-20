@@ -30,7 +30,6 @@
     "file-loader": "^6.0.0",
     "fork-ts-checker-webpack-plugin": "^5.0.14",
     "html-webpack-plugin": "^4.3.0",
-    "http": "^0.0.1-security",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.2.2",
     "mini-css-extract-plugin": "^0.10.0",
@@ -46,11 +45,12 @@
     "ts-jest": "^26.1.4",
     "ts-loader": "^8.0.2",
     "typescript": "^3.9.7",
+    "universal-hot-reload": "^3.3.4",
     "url-loader": "^4.1.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^5.1.1"
+    "webpack-merge": "^5.1.1",
+    "webpack-node-externals": "^2.5.1"
   },
   "peerDependencies": {
     "express": ">=4.17.x",

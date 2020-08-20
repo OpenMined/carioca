@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
 /*
+CURRENT ISSUES:
+- Dev only works with server.js in the app itself
+
 TODO:
-- Add support for SSR on dev
-- Fix HMR
+- Remove the html template plugin if possible
 - Add support for metadata and favicon
 - Add internationalization
 - Add support for SPA
