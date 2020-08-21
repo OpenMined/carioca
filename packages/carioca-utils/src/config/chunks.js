@@ -2,12 +2,12 @@
 module.exports = () => ({
   optimization: {
     moduleIds: 'hashed',
-    runtimeChunk: 'single',
+    runtimeChunk: 'single', // Create a runtime chunk
     splitChunks: {
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
+          name: 'vendors', // Create a vendors chunk
           chunks: 'all',
         },
       },

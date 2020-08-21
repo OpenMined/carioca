@@ -7,6 +7,7 @@ module.exports = () => ({
         use: {
           loader: 'url-loader',
           options: {
+            // Limit it to roughly 8kb
             limit: 8000,
             name: 'static/media/[name].[hash:8].[ext]',
           },

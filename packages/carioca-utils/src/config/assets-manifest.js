@@ -6,6 +6,9 @@ module.exports = (paths) => ({
     new AssetsWebpackPlugin({
       path: paths.outputDirectory,
       filename: /[^/]*$/.exec(paths.assetsManifestFile)[0],
+
+      // We want to process the output to make it easier to parse on the server
+      // This is used for swapping out relative paths for absolute paths with the dev port included
       processOutput: (assets) => {
         const other = assets[''];
 

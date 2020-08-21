@@ -6,15 +6,14 @@ ISSUES:
 - FOUC on dev
 
 TODO:
-- Add support for SPA
 - Add support for custom ports
 - Add options and examples to sade scripts
 - Add support for metadata via page component
 - Add internationalization
 - Add support for custom templates
+- Add support for SPA
 - Clean up the logs and make them more attractive
 - Add support for Preact with compat
-- Do an inline documentation runthrough
 - Document ALL the features and things this can do
 - Add acknoledgements
 - Change github description
@@ -32,15 +31,22 @@ TODO:
 - Upgrade to Webpack 5 when released
 */
 
+// Require sade
 const sade = require('sade');
 
+// Require a helpful script for running commands
 const runCommand = require('./scripts/run-command');
+
+// Require our package.json file
 const pkg = require('./package.json');
 
+// Define the sade script
 const prog = sade('@carioca/scripts');
 
+// Add the version information to our sade CLI
 prog.version(pkg.version);
 
+// Add the build script (production)
 prog
   .command('build')
   .describe('Build the application in production mode.')
@@ -51,6 +57,7 @@ prog
     );
   });
 
+// Add the build script (development)
 prog
   .command('build:dev')
   .describe('Build the application in development mode.')
@@ -61,6 +68,7 @@ prog
     );
   });
 
+// Add the development script (live-reload)
 prog
   .command('dev')
   .describe('Start the application in development mode.')
@@ -71,6 +79,7 @@ prog
     );
   });
 
+// Add the test script
 prog
   .command('test')
   .describe('Runs the test suite (supports all Jest CLI flags).')
@@ -84,20 +93,5 @@ prog
     );
   });
 
-// prog
-//   .version('1.0.5')
-//   .option('--global, -g', 'An example global flag')
-//   .option('-c, --config', 'Provide path to custom config', 'foo.config.js');
-
-// prog
-//   .command('build <src> <dest>')
-//   .describe('Build the source directory. Expects an `index.js` entry file.')
-//   .option('-o, --output', 'Change the name of the output file', 'bundle.js')
-//   .example('build src build --global --config my-conf.js')
-//   .example('build app public -o main.js')
-//   .action((src, dest, opts) => {
-//     console.log(`> building from ${src} to ${dest}`);
-//     console.log('> these are extra opts', opts);
-//   });
-
+// Tell our CLI to parse the arguments it's given and we're off to the races!
 prog.parse(process.argv);

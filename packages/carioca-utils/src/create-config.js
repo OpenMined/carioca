@@ -1,6 +1,7 @@
 // Import Webpack merge
 const { merge } = require('webpack-merge');
 
+// Import all of our custom Webpack transformer functions
 const setContext = require('./config/context');
 const setTarget = require('./config/target');
 const setMode = require('./config/mode');
@@ -21,7 +22,9 @@ const setNodeExternals = require('./config/externals');
 const runCleanDirectory = require('./config/clean');
 const compileChunks = require('./config/chunks');
 
+// Receives a target, mode, intention, and a path list (created by definePaths())
 module.exports = (t, m, i, paths) => {
+  // Set some global variables
   const vars = {
     // Is is the client or the server?
     IS_CLIENT: t === 'web',
@@ -40,8 +43,10 @@ module.exports = (t, m, i, paths) => {
     DEV_PORT: 3001,
   };
 
+  // Make sure the NODE_ENV is set to the mode
   process.env.NODE_ENV = m;
 
+  // Call our custom Webpack transformer functions
   const context = setContext();
   const target = setTarget(t);
   const mode = setMode(m);
@@ -66,6 +71,7 @@ module.exports = (t, m, i, paths) => {
   const cleanDirectory = runCleanDirectory();
   const chunks = compileChunks();
 
+  // Define what all Webpack configs have in common
   const common = merge([
     context,
     target,
@@ -81,6 +87,7 @@ module.exports = (t, m, i, paths) => {
     sourceMaps,
   ]);
 
+  // The following if blocks merge the common Webpack config with the environment-specific needs
   if (vars.IS_LIVE) {
     if (vars.IS_CLIENT) {
       return merge([common, assetsManifest, copyPublic]);

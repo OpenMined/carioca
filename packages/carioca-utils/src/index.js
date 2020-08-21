@@ -1,3 +1,4 @@
+// Define paths and create config
 const definePaths = require('./define-paths');
 const createConfig = require('./create-config');
 
@@ -5,8 +6,16 @@ const createConfig = require('./create-config');
 const setContext = require('./config/context');
 const setTarget = require('./config/target');
 const setMode = require('./config/mode');
-const { setClientEntries, setServerEntries, setEntry } = require('./config/entry');
-const { setClientOutput, setServerOutput, setOutput } = require('./config/output');
+const {
+  setClientEntries,
+  setServerEntries,
+  setEntry,
+} = require('./config/entry');
+const {
+  setClientOutput,
+  setServerOutput,
+  setOutput,
+} = require('./config/output');
 const setResolves = require('./config/resolve');
 const setEnvironmentVariables = require('./config/env');
 const compileJSAndTS = require('./config/javascript');
@@ -48,6 +57,6 @@ module.exports = {
     setPeerDeps,
     setNodeExternals,
     runCleanDirectory,
-    compileChunks
-  }
+    compileChunks,
+  },
 };

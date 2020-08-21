@@ -4,6 +4,7 @@ const PostCSSPresetEnv = require('postcss-preset-env');
 
 // Define the loader for compiling CSS
 module.exports = ({ IS_BUILD, IS_CLIENT, IS_LIVE }) => {
+  // Use the css-loader and postcss-loader with minification
   const cssRules = [
     {
       loader: 'css-loader',
@@ -18,7 +19,10 @@ module.exports = ({ IS_BUILD, IS_CLIENT, IS_LIVE }) => {
     },
   ];
 
+  // If we're building the client, make them files instead of inlining
   if (IS_BUILD && IS_CLIENT) cssRules.unshift(MiniCssExtractPlugin.loader);
+
+  // Otherwise, inline the CSS and load it
   if (IS_LIVE && IS_CLIENT) cssRules.unshift('style-loader');
 
   return {

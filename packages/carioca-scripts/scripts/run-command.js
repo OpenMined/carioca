@@ -1,6 +1,7 @@
 const spawn = require('cross-spawn');
 
 module.exports = (command, args) => {
+  // Spawn a new command
   const result = spawn.sync(command, args, { stdio: 'inherit' });
 
   if (result.signal) {
@@ -18,8 +19,10 @@ module.exports = (command, args) => {
       );
     }
 
+    // Assuming there's no error (the logic above) exit with a positive result
     process.exit(1);
   }
 
+  // Exit the process after we're finished
   process.exit(result.status);
 };
