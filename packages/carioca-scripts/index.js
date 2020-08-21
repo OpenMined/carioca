@@ -2,18 +2,19 @@
 
 /*
 ISSUES:
-- Dev only works with server.js in the app itself
+- yarn build creates a static folder outside of dist/public in the dist folder
+- FOUC on dev
 
 TODO:
-- Try style loader for node to see if we can't get CSS working on dev
-- Make @carioca/server package to replace the server file
+- Add support for SPA
+- Add support for custom ports
+- Add options and examples to sade scripts
 - Add support for metadata via page component
 - Add internationalization
-- Add support for SPA
-- Add options and examples to sade scripts
 - Add support for custom templates
 - Clean up the logs and make them more attractive
 - Add support for Preact with compat
+- Do an inline documentation runthrough
 - Document ALL the features and things this can do
 - Add acknoledgements
 - Change github description
@@ -22,16 +23,17 @@ TODO:
   (with a link on how to generate them)
 - When doing the CLI, make sure to also copy .gitignore, LICENSE, and README
 - Publish initial version
+- Write tests for everything
+- Support the ability for @carioca/server to use the existing code for building JS instead of babel-loader
 - Add prettier formatting and eslint to projects themselves
 - Add support for content security policies: https://webpack.js.org/guides/csp/
 - Add support for PWA's: https://webpack.js.org/guides/progressive-web-application/
 - Support internationalization and also PWA's over multiple origins: https://web.dev/multi-origin-pwas/
 - Upgrade to Webpack 5 when released
-- Write tests for everything
-- Write documentation for everything
 */
 
 const sade = require('sade');
+
 const runCommand = require('./scripts/run-command');
 const pkg = require('./package.json');
 

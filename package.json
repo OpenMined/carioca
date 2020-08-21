@@ -13,11 +13,9 @@
   "scripts": {
     "bootstrap": "yarn install && lerna bootstrap --use-workspaces",
     "clean": "lerna clean --yes && rm -rf node_modules",
+    "reset": "yarn clean && yarn bootstrap",
     "release": "lerna publish",
-    "test": "lerna run test",
-    "test-dev": "yarn workspace @carioca/test-app dev",
-    "test-build": "yarn workspace @carioca/test-app build && yarn workspace @carioca/test-app start",
-    "test-build:dev": "yarn workspace @carioca/test-app build:dev && yarn workspace @carioca/test-app start"
+    "test": "lerna run test"
   },
   "devDependencies": {
     "lerna": "^3.22.1"

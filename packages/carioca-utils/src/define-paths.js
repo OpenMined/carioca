@@ -2,16 +2,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// Define the root of where this dependency is installed - very important!
-const appRoot = path.resolve(process.cwd());
-
-// Define two functions:
-// - One to resolve paths to the installation location
-// - Another to resolve paths to this project
-const resolveApp = (relativePath) => path.resolve(appRoot, relativePath);
-const resolveSelf = (relativePath) =>
-  path.resolve(__dirname, '..', relativePath);
-
 // A simple recursive function to ensure that a directory exists before writing a file
 const ensureDirectoryExistence = (filePath) => {
   const dirname = path.dirname(filePath);
@@ -32,7 +22,7 @@ const safeJSONParse = (data) => {
 
 // A function that takes all the current paths, the name of the file you want to copy
 // And the modifications that you want to perform to that file before copying
-const defineConfigFile = (paths, name, modifications, output) => {
+const defineConfigFile = ({ resolveApp, resolveSelf }, name, modifications, output) => {
   // Get the requested config file from the appRoot
   const configFileAppPath = resolveApp(name);
 
@@ -48,7 +38,7 @@ const defineConfigFile = (paths, name, modifications, output) => {
   // Read that template file and parse it as JSON
   let configFileTemplate = safeJSONParse(
     fs.readFileSync(configFileTemplatePath, {
-      encoding: 'utf-8',
+      encoding: 'utf-8'
     })
   );
 
@@ -78,7 +68,7 @@ const defineTSConfigFile = (paths) =>
     // Make sure to tell the template to include all files inside the source directory
     template.include = [
       `${paths.sourceDirectory}/**/*`,
-      resolveSelf('templates/declarations.d.ts'),
+      paths.resolveSelf('templates/declarations.d.ts')
     ];
 
     // Make sure to tell the template not to transpile the output directory
@@ -96,12 +86,7 @@ const defineESLintConfigFile = (paths) =>
   });
 
 const definePrettierConfigFile = (paths) =>
-  defineConfigFile(
-    paths,
-    '.prettierrc',
-    (template) => template,
-    resolveApp('.prettierrc')
-  );
+  defineConfigFile(paths, '.prettierrc', (template) => template, paths.resolveApp('.prettierrc'));
 
 const defineJestConfigFile = (paths) =>
   defineConfigFile(paths, 'jest.config.js', (template) => {
@@ -121,7 +106,7 @@ const defineJestConfigFile = (paths) =>
         '!<rootDir>/node_modules/**/*',
         '!<rootDir>/coverage/**/*',
         '!<rootDir>/${paths.relativePaths.outputDirectory}/**/*'
-      ]`,
+      ]`
     ];
 
     // Find an replace the overrides at the matching string
@@ -130,22 +115,33 @@ const defineJestConfigFile = (paths) =>
     return template;
   });
 
-const preparePaths = () => {
-  // According to the appRoot, get our package.json files and parse it
-  const packageFile = resolveApp('package.json');
-  const parsedPackageFile = JSON.parse(fs.readFileSync(packageFile));
-
+const definePaths = () => {
   const relativePaths = {
     sourceDirectory: 'src',
     publicDirectory: 'public',
     outputDirectory: 'dist',
-    outputClientDirectory: 'dist/public',
+    outputClientDirectory: 'dist/public'
   };
+
+  // Define the root of where this dependency is installed - very important!
+  const appRoot = path.resolve(process.cwd());
+
+  // Define two functions:
+  // - One to resolve paths to the installation location
+  // - Another to resolve paths to this project
+  const resolveApp = (relativePath) => path.resolve(appRoot, relativePath);
+  const resolveSelf = (relativePath) => path.resolve(__dirname, '..', relativePath);
+
+  // According to the appRoot, get our package.json files and parse it
+  const packageFile = resolveApp('package.json');
+  const parsedPackageFile = JSON.parse(fs.readFileSync(packageFile));
 
   // Define a couple paths to reuse throughout generating our final Webpack configuration files
   const paths = {
     relativePaths,
     appRoot,
+    resolveApp,
+    resolveSelf,
     ownRoot: resolveSelf('.'),
     appPackage: packageFile,
     appPackageParsed: parsedPackageFile,
@@ -155,14 +151,10 @@ const preparePaths = () => {
     publicDirectory: resolveApp(relativePaths.publicDirectory),
     outputDirectory: resolveApp(relativePaths.outputDirectory),
     outputClientDirectory: resolveApp(relativePaths.outputClientDirectory),
-    assetsManifestFile: resolveApp(
-      `${relativePaths.outputDirectory}/assets.json`
-    ),
+    assetsManifestFile: resolveApp(`${relativePaths.outputDirectory}/assets.json`),
     clientEntry: resolveApp(parsedPackageFile['carioca'].client),
     serverEntry: resolveApp(parsedPackageFile['carioca'].server),
-    publicHTMLTemplate: resolveApp(
-      `${relativePaths.publicDirectory}/index.html`
-    ),
+    publicHTMLTemplate: resolveApp(`${relativePaths.publicDirectory}/index.html`)
   };
 
   // Check for the existence of various configuration files in the appRoot
@@ -175,8 +167,4 @@ const preparePaths = () => {
   return paths;
 };
 
-module.exports = {
-  default: preparePaths,
-  resolveApp: resolveApp,
-  resolveSelf: resolveSelf,
-};
+module.exports = definePaths;

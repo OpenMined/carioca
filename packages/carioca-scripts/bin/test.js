@@ -1,8 +1,8 @@
 #! /usr/bin/env node
 
 const mri = require('mri');
+const { definePaths } = require('@carioca/utils');
 
-const preparePaths = require('../scripts/prepare-paths').default;
 const runCommand = require('../scripts/run-command');
 
 const args = mri(process.argv.slice(2));
@@ -15,5 +15,5 @@ Object.entries(args).forEach((a) => {
   else other.push(`--${a[0]}=${a[1]}`);
 });
 
-const paths = preparePaths();
+const paths = definePaths();
 runCommand('jest', ['--config', paths.jestConfigPath, ...other]);

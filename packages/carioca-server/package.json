@@ -1,0 +1,17 @@
+{
+  "name": "@carioca/server",
+  "version": "0.1.0",
+  "description": "The default server for carioca to avoid needing to always have your own server file",
+  "author": "Patrick Cason <me@patrickcason.com>",
+  "license": "Apache-2.0",
+  "main": "dist/server.js",
+  "scripts": {
+    "postinstall": "webpack --config webpack.config.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "babel-loader": "^8.1.0"
+  }
+}

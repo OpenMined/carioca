@@ -7,7 +7,9 @@
 ![License](https://img.shields.io/github/license/cereallarceny/carioca)
 ![Version](https://img.shields.io/github/lerna-json/v/cereallarceny/carioca)
 
-A starter project that gives you everything you need to start building great looking websites and web applications. This project also powers our website, blog, and Grid Admin.
+> Sit back, drink a caipirinha, vai ficar tudo bem!
+
+A starter project that gives you everything you need to start building great looking websites and web applications.
 
 - :raised_hands: Zero-config development for React web applications
 - :rocket: Full support for SPA (single-page applications) or SSR (server-side rendered) applications
@@ -22,8 +24,8 @@ A starter project that gives you everything you need to start building great loo
 ### Creating a new project
 
 ```bash
-npx @carioca/generator test-razzle-app
-cd test-razzle-app
+npx @carioca/generator my-app
+cd my-app
 yarn dev # or "npm run dev" if that's your thing
 ```
 

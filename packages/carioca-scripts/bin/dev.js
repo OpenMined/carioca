@@ -1,11 +1,9 @@
 #! /usr/bin/env node
 
 const UniversalHotReload = require('universal-hot-reload').default;
+const { createConfig, definePaths } = require('@carioca/utils');
 
-const preparePaths = require('../scripts/prepare-paths').default;
-const createConfig = require('../scripts/create-config');
-
-const paths = preparePaths();
+const paths = definePaths();
 
 const clientConfig = createConfig('web', 'development', 'run', paths);
 const serverConfig = createConfig('node', 'development', 'run', paths);
