@@ -1,9 +1,7 @@
 #! /usr/bin/env node
 
 const mri = require('mri');
-const { definePaths } = require('@carioca/utils');
-
-const runCommand = require('../scripts/run-command');
+const { definePaths, runCommand } = require('@carioca/utils');
 
 // Get the arguments that the user input and parse them with mri
 const args = mri(process.argv.slice(2));

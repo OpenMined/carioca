@@ -2,9 +2,7 @@
 
 const UniversalHotReload = require('universal-hot-reload').default;
 const mri = require('mri');
-const { createConfig, definePaths } = require('@carioca/utils');
-
-const { info, success } = require('../scripts/log');
+const { createConfig, definePaths, info, success } = require('@carioca/utils');
 
 const args = mri(process.argv.slice(2));
 

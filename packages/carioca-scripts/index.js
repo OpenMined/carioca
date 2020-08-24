@@ -6,13 +6,10 @@ ISSUES:
 - FOUC on dev
 
 TODO:
-- Add support for metadata via page component
-- Add internationalization
-- Add support for custom templates
 - Fork and quiet the logs of universal-hot-reload
-- Document ALL the features and things this can do
-- Add acknoledgements
-- Change github description
+- Update all package.json files
+- Document the features
+- Document the CLI
 - Use auto-changelog
 - Create CLI for web-generator and make sure to include all the manifest files too
   (with a link on how to generate them)
@@ -20,7 +17,12 @@ TODO:
 - Publish initial version
 
 FUTURE:
+- Add support for metadata via page component (with extension capabilities)
+- Add internationalization
+- Add multi-domain deployment support (re: Hausing, allow strategy to be configurable)
+- Add support for custom templates
 - Write tests for everything
+- Abstract away the server file from the user so that they don't need to have this in their project
 - Support the ability for @carioca/server to use the existing code for building JS instead of babel-loader
 - Add support for Preact with compat
 - Allow custom ports for yarn start (spa)
@@ -29,6 +31,7 @@ FUTURE:
 - Add support for content security policies: https://webpack.js.org/guides/csp/
 - Add support for PWA's: https://webpack.js.org/guides/progressive-web-application/
 - Support internationalization and also PWA's over multiple origins: https://web.dev/multi-origin-pwas/
+- When supporting PWA's, make sure to provide functions for good installation UX: https://web.dev/promote-install/
 - Upgrade to Webpack 5 when released
 */
 
@@ -36,13 +39,13 @@ FUTURE:
 const sade = require('sade');
 
 // Require a helpful script for running commands
-const runCommand = require('./scripts/run-command');
+const { runCommand } = require('@carioca/utils');
 
 // Require our package.json file
 const pkg = require('./package.json');
 
 // Define the sade script
-const prog = sade('@carioca/scripts');
+const prog = sade('carioca');
 
 // Add the version information to our sade CLI
 prog.version(pkg.version);

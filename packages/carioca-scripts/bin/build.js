@@ -2,9 +2,13 @@
 
 const webpack = require('webpack');
 const mri = require('mri');
-const { createConfig, definePaths } = require('@carioca/utils');
-
-const { info, error, success } = require('../scripts/log');
+const {
+  createConfig,
+  definePaths,
+  info,
+  error,
+  success,
+} = require('@carioca/utils');
 
 // Handle compilation errors
 const handleErrors = (target, err, stats) => {

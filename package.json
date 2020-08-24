@@ -1,5 +1,6 @@
 {
   "name": "carioca",
+  "description": "Build server-rendered and single-page React applications with no configuration",
   "private": true,
   "workspaces": [
     "packages/*"

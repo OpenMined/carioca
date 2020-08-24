@@ -2,8 +2,7 @@
 
 const path = require('path');
 const fs = require('fs');
-const { definePaths } = require('@carioca/utils');
-const runCommand = require('../scripts/run-command');
+const { definePaths, runCommand } = require('@carioca/utils');
 
 // Determine our paths
 const paths = definePaths();
