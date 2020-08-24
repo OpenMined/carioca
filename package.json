@@ -30,7 +30,7 @@
     "reset": "yarn clean && yarn bootstrap",
     "release": "lerna publish",
     "test": "lerna run test",
-    "version": "lerna-changelog && git add CHANGELOG.md"
+    "version": "lerna-changelog"
   },
   "devDependencies": {
     "lerna": "^3.22.1",
