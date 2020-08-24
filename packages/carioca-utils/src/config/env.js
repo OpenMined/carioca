@@ -1,6 +1,6 @@
 const { DefinePlugin } = require('webpack');
 
-module.exports = (paths, { IS_BUILD, PORT }) => {
+module.exports = (paths, { IS_SSR, PORT }) => {
   // Parse the .env file in the user's project
   const userVars = require('dotenv').config({ path: paths.envFile });
 
@@ -8,7 +8,7 @@ module.exports = (paths, { IS_BUILD, PORT }) => {
   const vars = { ...userVars.parsed };
 
   // Make sure the server can know where the static assets live
-  vars['PUBLIC_DIR'] = IS_BUILD
+  vars['PUBLIC_DIR'] = IS_SSR
     ? paths.relativePaths.outputClientDirectory
     : paths.relativePaths.outputDirectory;
 

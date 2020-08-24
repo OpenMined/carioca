@@ -16,55 +16,67 @@ const compileStaticAssets = require('./config/static-assets');
 const compileSourceMaps = require('./config/source-maps');
 const compileAssetsManifest = require('./config/assets-manifest');
 const runCopyPublic = require('./config/copy-public');
+const runHTMLSetup = require('./config/html');
 const runSetupNode = require('./config/node');
 const setPeerDeps = require('./config/peer-deps');
 const setNodeExternals = require('./config/externals');
 const runCleanDirectory = require('./config/clean');
 const compileChunks = require('./config/chunks');
 
-// Receives a target, mode, intention, and a path list (created by definePaths())
-module.exports = (t, m, i, paths) => {
+// Receives a target, intention, env, mode, port, and a paths list (created by definePaths())
+module.exports = (config) => {
+  // target - what are we trying to build for: "web" or "node"?
+  // intention - are we trying to "run" something using HMR or "build" it for deployment?
+  // env - what is the environment: "development" or "production"?
+  // mode - do we require a server ("ssr") or can it be a client-side only ("spa")?
+  // port - what port to we want to run on?
+  // paths - the list of paths to various files and folders in the application or in this package
+
   // Set some global variables
   const vars = {
     // Is is the client or the server?
-    IS_CLIENT: t === 'web',
-    IS_SERVER: t === 'node',
-
-    // Are we in development or production mode?
-    IS_DEV: m === 'development',
-    IS_PROD: m === 'production',
+    IS_CLIENT: config.target === 'web',
+    IS_SERVER: config.target === 'node',
 
     // Are we trying to run the app or make a build of it?
-    IS_LIVE: i === 'run',
-    IS_BUILD: i === 'build',
+    IS_LIVE: config.intention === 'run',
+    IS_BUILD: config.intention === 'build',
 
-    // Define the default ports
-    PORT: 3000,
-    DEV_PORT: 3001,
+    // Are we in development or production mode?
+    IS_DEV: config.env === 'development',
+    IS_PROD: config.env === 'production',
+
+    // Are we running a server-side rendered application or a single-page application
+    IS_SSR: config.mode === 'ssr',
+    IS_SPA: config.mode === 'spa',
+
+    // Define the default port
+    PORT: config.port,
   };
 
   // Make sure the NODE_ENV is set to the mode
-  process.env.NODE_ENV = m;
+  process.env.NODE_ENV = config.env;
 
   // Call our custom Webpack transformer functions
   const context = setContext();
-  const target = setTarget(t);
-  const mode = setMode(m);
+  const target = setTarget(config.target);
+  const mode = setMode(config.env);
   const entries = vars.IS_CLIENT
-    ? setClientEntries(paths)
-    : setServerEntries(paths);
+    ? setClientEntries(config.paths)
+    : setServerEntries(config.paths);
   const output = vars.IS_CLIENT
-    ? setClientOutput(paths, vars)
-    : setServerOutput(paths, vars);
-  const resolves = setResolves(paths);
-  const envs = setEnvironmentVariables(paths, vars);
-  const javascript = compileJSAndTS(paths, vars);
+    ? setClientOutput(config.paths, vars)
+    : setServerOutput(config.paths, vars);
+  const resolves = setResolves(config.paths);
+  const envs = setEnvironmentVariables(config.paths, vars);
+  const javascript = compileJSAndTS(config.paths, vars);
   const css = compileCSS(vars);
   const csv = compileCSV();
   const staticAssets = compileStaticAssets();
   const sourceMaps = compileSourceMaps(vars);
-  const assetsManifest = compileAssetsManifest(paths);
-  const copyPublic = runCopyPublic(paths);
+  const assetsManifest = compileAssetsManifest(config.paths);
+  const copyPublic = runCopyPublic(config.paths);
+  const htmlTemplate = runHTMLSetup(config.paths);
   const setupNode = runSetupNode();
   const peerDeps = setPeerDeps();
   const nodeExternals = setNodeExternals();
@@ -87,25 +99,32 @@ module.exports = (t, m, i, paths) => {
     sourceMaps,
   ]);
 
-  // The following if blocks merge the common Webpack config with the environment-specific needs
-  if (vars.IS_LIVE) {
-    if (vars.IS_CLIENT) {
-      return merge([common, assetsManifest, copyPublic]);
-    } else if (vars.IS_SERVER) {
-      return merge([common, setupNode, peerDeps, nodeExternals]);
+  // The following if blocks merge the common Webpack config with the specific needs
+  if (vars.IS_CLIENT) {
+    const client = merge([common, assetsManifest, copyPublic]);
+
+    if (vars.IS_LIVE) {
+      if (vars.IS_SSR) {
+        return client;
+      } else if (vars.IS_SPA) {
+        return merge([client, htmlTemplate]);
+      }
+    } else if (vars.IS_BUILD) {
+      const clientBuild = merge([client, peerDeps, cleanDirectory, chunks]);
+
+      if (vars.IS_SSR) {
+        return clientBuild;
+      } else if (vars.IS_SPA) {
+        return merge([clientBuild, htmlTemplate]);
+      }
     }
-  } else if (vars.IS_BUILD) {
-    if (vars.IS_CLIENT) {
-      return merge([
-        common,
-        assetsManifest,
-        copyPublic,
-        peerDeps,
-        cleanDirectory,
-        chunks,
-      ]);
-    } else if (vars.IS_SERVER) {
-      return merge([common, setupNode, peerDeps]);
+  } else if (vars.IS_SERVER) {
+    const server = merge([common, setupNode, peerDeps]);
+
+    if (vars.IS_LIVE) {
+      return merge([server, nodeExternals]);
+    } else if (vars.IS_BUILD) {
+      return server;
     }
   }
 };

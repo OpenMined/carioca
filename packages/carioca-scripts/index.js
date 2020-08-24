@@ -6,14 +6,10 @@ ISSUES:
 - FOUC on dev
 
 TODO:
-- Add support for custom ports
-- Add options and examples to sade scripts
 - Add support for metadata via page component
 - Add internationalization
 - Add support for custom templates
-- Add support for SPA
-- Clean up the logs and make them more attractive
-- Add support for Preact with compat
+- Fork and quiet the logs of universal-hot-reload
 - Document ALL the features and things this can do
 - Add acknoledgements
 - Change github description
@@ -22,8 +18,13 @@ TODO:
   (with a link on how to generate them)
 - When doing the CLI, make sure to also copy .gitignore, LICENSE, and README
 - Publish initial version
+
+FUTURE:
 - Write tests for everything
 - Support the ability for @carioca/server to use the existing code for building JS instead of babel-loader
+- Add support for Preact with compat
+- Allow custom ports for yarn start (spa)
+- Allow port to be set via environment variable (maybe)
 - Add prettier formatting and eslint to projects themselves
 - Add support for content security policies: https://webpack.js.org/guides/csp/
 - Add support for PWA's: https://webpack.js.org/guides/progressive-web-application/
@@ -46,10 +47,20 @@ const prog = sade('@carioca/scripts');
 // Add the version information to our sade CLI
 prog.version(pkg.version);
 
-// Add the build script (production)
+// Add the build script
 prog
   .command('build')
-  .describe('Build the application in production mode.')
+  .describe('Build the application')
+  .option(
+    '-e --env',
+    'The environment you want to build (production or development)',
+    'production'
+  )
+  .option('-m --mode', 'The mode you want to build as (ssr or spa)', 'ssr')
+  .option('-p --port', 'The port where you want your application to run', 3000)
+  .example('build --env development')
+  .example('build --mode spa')
+  .example('build --port 8000')
   .action(() => {
     runCommand(
       'node',
@@ -57,21 +68,25 @@ prog
     );
   });
 
-// Add the build script (development)
+// Add the start script
 prog
-  .command('build:dev')
-  .describe('Build the application in development mode.')
+  .command('start')
+  .describe('Run the built application - make sure to build first!')
   .action(() => {
     runCommand(
       'node',
-      [require.resolve('./bin/build')].concat(process.argv.slice(3))
+      [require.resolve('./bin/start')].concat(process.argv.slice(3))
     );
   });
 
 // Add the development script (live-reload)
 prog
   .command('dev')
-  .describe('Start the application in development mode.')
+  .describe('Start the application in development mode')
+  .option('-m --mode', 'The mode you want to build as (ssr or spa)', 'ssr')
+  .option('-p --port', 'The port where you want your application to run', 3000)
+  .example('dev --mode spa')
+  .example('dev --port 8000')
   .action(() => {
     runCommand(
       'node',
@@ -82,7 +97,7 @@ prog
 // Add the test script
 prog
   .command('test')
-  .describe('Runs the test suite (supports all Jest CLI flags).')
+  .describe('Runs the test suite (supports all Jest CLI flags)')
   .example('test --watch')
   .example('test --coverage')
   .example('test --passWithNoTests --verbose')

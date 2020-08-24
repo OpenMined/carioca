@@ -11,9 +11,11 @@
   },
   "scripts": {
     "dev": "carioca dev",
+    "dev:spa": "carioca dev --mode spa",
     "build": "carioca build",
-    "build:dev": "carioca build:dev",
-    "start": "node dist/server.js",
+    "build:spa": "carioca build --mode spa",
+    "build:dev": "carioca build --env development",
+    "start": "carioca start",
     "test": "carioca test",
     "test:watch": "carioca test --watch",
     "test:coverage": "carioca test --coverage"

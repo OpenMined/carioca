@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@carioca/utils": "file:../carioca-utils",
+    "chalk": "^4.1.0",
     "cross-spawn": "^7.0.3",
+    "http-server": "^0.12.3",
     "sade": "^1.7.3",
     "universal-hot-reload": "^3.3.4"
   }

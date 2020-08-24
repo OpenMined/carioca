@@ -11,7 +11,7 @@ const addMarkup = (html, markup) =>
   html.replace('<div id="root"></div>', `<div id="root">${markup}</div>`);
 
 // A helper function to replace all instances of an href or src attribute with the correct value
-// This is necessary for the dev server, which will receive an assets manifest with http://localhost:${DEV_PORT} prepended to each asset
+// This is necessary for the dev server, which will receive an assets manifest with http://localhost:${PORT + 1} prepended to each asset
 // If we don't swap out the attribute values, they will read from the wrong port on the dev server - tricky!
 const correctAssetValues = (markup, assets) => {
   const firstAsset = assets.other[0];

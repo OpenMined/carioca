@@ -7,6 +7,8 @@ import { caipirinha } from '@carioca/server';
 
 import App from './App';
 
+const PORT = process.env.PORT;
+
 const createServer = () => {
   const template = fs.readFileSync(process.env.HTML_TEMPLATE, {
     encoding: 'utf-8'
@@ -39,6 +41,6 @@ const createServer = () => {
     });
 };
 
-export default createServer().listen(process.env.PORT, () => {
-  console.log('Listening...');
+export default createServer().listen(PORT, () => {
+  console.log(`Server started at http://localhost:${PORT}`);
 });
