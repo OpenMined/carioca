@@ -30,10 +30,10 @@
     "reset": "yarn clean && yarn bootstrap",
     "release": "lerna publish",
     "test": "lerna run test",
-    "version": "auto-changelog -p ./packages/carioca-scripts/package.json && git add CHANGELOG.md"
+    "version": "lerna-changelog && git add CHANGELOG.md"
   },
   "devDependencies": {
-    "auto-changelog": "^2.2.0",
-    "lerna": "^3.22.1"
+    "lerna": "^3.22.1",
+    "lerna-changelog": "^1.0.1"
   }
 }
