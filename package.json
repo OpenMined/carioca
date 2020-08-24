@@ -5,6 +5,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Patrick Cason <me@patrickcason.com>",
   "license": "Apache-2.0",
   "repository": {
