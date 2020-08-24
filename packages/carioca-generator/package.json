@@ -1,7 +1,24 @@
 {
   "name": "@carioca/generator",
   "version": "0.1.0",
-  "description": "A generator function to create new React applications",
+  "description": "A web app generator CLI to build server-rendered and single-page React applications with no configuration",
   "author": "Patrick Cason <me@patrickcason.com>",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cereallarceny/carioca.git"
+  },
+  "keywords": [
+    "carioca",
+    "javascript",
+    "isomorphic",
+    "universal",
+    "ssr",
+    "spa",
+    "react",
+    "preact",
+    "webpack",
+    "server-side-rendering",
+    "single-page-app"
+  ]
 }

@@ -1,40 +1,5 @@
 #!/usr/bin/env node
 
-/*
-ISSUES:
-- yarn build creates a static folder outside of dist/public in the dist folder
-- FOUC on dev
-
-TODO:
-- Fork and quiet the logs of universal-hot-reload
-- Update all package.json files
-- Document the features
-- Document the CLI
-- Use auto-changelog
-- Create CLI for web-generator and make sure to include all the manifest files too
-  (with a link on how to generate them)
-- When doing the CLI, make sure to also copy .gitignore, LICENSE, and README
-- Publish initial version
-
-FUTURE:
-- Add support for metadata via page component (with extension capabilities)
-- Add internationalization
-- Add multi-domain deployment support (re: Hausing, allow strategy to be configurable)
-- Add support for custom templates
-- Write tests for everything
-- Abstract away the server file from the user so that they don't need to have this in their project
-- Support the ability for @carioca/server to use the existing code for building JS instead of babel-loader
-- Add support for Preact with compat
-- Allow custom ports for yarn start (spa)
-- Allow port to be set via environment variable (maybe)
-- Add prettier formatting and eslint to projects themselves
-- Add support for content security policies: https://webpack.js.org/guides/csp/
-- Add support for PWA's: https://webpack.js.org/guides/progressive-web-application/
-- Support internationalization and also PWA's over multiple origins: https://web.dev/multi-origin-pwas/
-- When supporting PWA's, make sure to provide functions for good installation UX: https://web.dev/promote-install/
-- Upgrade to Webpack 5 when released
-*/
-
 // Require sade
 const sade = require('sade');
 

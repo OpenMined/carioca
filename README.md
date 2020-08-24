@@ -29,13 +29,23 @@ There's no shortage of generator projects out there! Two of the most popular are
 - **Carioca supports both single-page applications (SPA's) and server-side rendering (SSR).** Create React App has made it very clear that they never have any intention of supporting SSR and directly tell you to use Razzle or Next.js to solve this purpose. Razzle also supports for SPA's and SSR.
 - **Carioca is actively maintained.** Razzle is not - at least the original author has loosely handed over development to a few other contributors. No shame there, that's the way open-source development goes. However, I'm paid to do only open-source development and I use Carioca in all of my projects (most notably [OpenMined](https://openmined.org) uses Carioca for all of its web applications). I'm going to be maintaining this for a while.
 - **Carioca doesn't tie your builds to specific development environments.** Razzle does. When you build, you're building for production. You can't build for development, which I find somewhat annoying when I find descreapancies between my development build using HMR and the final compiled build. It sucks to have to do that testing against production data - not cool!
-- **Carioca is opinionated.** I think you'll like Carioca's opinions. There are a few, but not too many to be obnoxious. I'm not interested in supporting every possible configuration of a React application, but I'm always open to PR's for new functionality. Razzle suffered from too much code complexity, not enough internal documentation to follow how things work, and conflicting dependencies across projects. Not here, we're gonna keep it simple. We presume you're going to use React, React Router, and Jest, but we're not going to give you so many confiruation options that makes Carioca difficult to maintain.
-- **Carioca is very well documented.** The entire codebase should read like a book and virtually every line in the project is well-explained so that you have context to follow along.
-- **Carioca support service workers and PWA's.** Let us handle all that Webpack and Workbox nonsense for you - ain't no thang.
+- **Carioca is opinionated, but for good reason.** [I think you'll like Carioca's opinions.](#opinions) There are a few, but not too many to be obnoxious. A lot of projects aim to support every possible configuration of a React application, but this often results in a confusing, sloppy, and difficult-to-maintain codebase. I'm always open to PR's for new functionality, but the list of features isn't expected to increase unless there's a good reason.
+- **Carioca is well documented.** The entire codebase should read like a book and virtually every line in the project is well-explained so that you have context to follow along.
+- **Carioca supports service workers and PWA's.** Let us handle all that Webpack and Workbox nonsense for you - ain't no thang.
 - **Carioca supports custom templates.** What do you do every time you run `npx create-react-app`? You delete all the crap you don't need, remove all the styles, and spinning logos. Nonsense! With Carioca, we support your own custom templates so that whenever you start a new project it follows your project structure - not what I think is best for you.
-- **Carioca support smart SEO defaults.** One of the opinions we've determined for you is how to handle SEO `<meta>` tags. Let's be honest, you don't like doing this anyhow. SEO is notoriously hard to implement on the server-side, but our reusable `<Page>` component make this stupid simple. If you really want to extend it to support your own tags, go for it!
+- **Carioca supports smart SEO defaults.** One of the opinions we've determined for you is how to handle SEO `<meta>` tags. Let's be honest, you don't like doing this anyhow. SEO is notoriously hard to implement on the server-side, but our reusable `<Page>` component make this stupid simple. If you really want to extend it to support your own tags, go for it!
 - **Carioca supports internationalization by default.** One of the last opinions we have is that websites should be built for the entire world to use. While it's not a requirement for your website to support more than one language, we've create some smart internationalization defaults so that its one less thing you need to think about. Considering internationalization is one of the hardest things I've come across in writing websites. Next.js is notorious for having internalization hiccups like adding the locale to the main `<html>` tag of the page... silliness.
 - **Carioca supports multiple domain deployment by default.** Speaking of internationalization, are you deploying multiple versions to multiple domains? I've been there, super tough. Carioca has support for multi-domain deployment combined with internationalization.
+
+### Opinions
+
+Here's a relatively exhaustive list of opinions that carioca has about your build process:
+
+- You must use **React** and **React Router**, although technically it's fine if you only have a single route and don't use any React Router code yourself.
+- You must use **Jest** for testing, we also provide **react-test-renderer** behind the scenes. We also support [overriding the default Jest configuration](#custom-configuration-files).
+- You must use **Prettier** for style enforcement and **ESLint** for enforcement of best-practices, although you may [override the configuration of both](#custom-configuration-files).
+- You may use either **Javascript** or **Typescript**, and you may [provide your own custom Typescript configuration](#custom-configuration-files).
+- We suggest you use **Express** for your server, although it's not strictly required.
 
 ## Installation
 
@@ -48,10 +58,10 @@ cd my-app
 
 Once you've scaffolded your new web application you can run:
 
-- `yarn dev` (or `npm run dev`) to start the development server
-- `yarn build` (or `npm run build`) to build your application
-- `yarn test` (or `npm run test`) to test your application
-- `yarn start` (or `npm run start`) to start your application (must run the `build` command first)
+- `yarn dev` (or `npm run dev`) to start the development server ([docs](#dev))
+- `yarn build` (or `npm run build`) to build your application ([docs](#build))
+- `yarn test` (or `npm run test`) to test your application ([docs](#test))
+- `yarn start` (or `npm run start`) to start your application (must run the `build` command first) ([docs](#start))
 
 [See the CLI documentation for more command options](#cli)
 
@@ -71,16 +81,104 @@ npm install @carioca/scripts
 
 From there, you can run any of the following commands:
 
-`carioca dev` - Runs a live-reload server for local development
-`carioca build` - Builds your application
-`carioca test` - Runs the Jest test suite
-`carioca start` - Starts your build application
+`carioca dev` - Runs a live-reload server for local development ([docs](#dev))
+`carioca build` - Builds your application ([docs](#build))
+`carioca test` - Runs the Jest test suite ([docs](#test))
+`carioca start` - Starts your build application ([docs](#start))
 
 [See the CLI documentation for more command options](#cli)
 
 ## CLI
 
-TODO: Insert CLI options here
+### `dev`
+
+Start the application in development mode
+
+**Options**
+
+- `-m, --mode`: The mode you want to build as (`ssr` or `spa`) (default `ssr`)
+- `-p, --port`: The port where you want your application to run (default `3000`)
+
+**Examples**
+
+- `carioca dev --mode spa`
+- `carioca dev --port 8000`
+
+### `build`
+
+Build the application
+
+**Options**
+
+- `-e, --env`: The environment you want to build (`production` or `development`) (default `production`)
+- `-m, --mode`: The mode you want to build as (`ssr` or `spa`) (default `ssr`)
+- `-p, --port`: The port where you want your application to run (default `3000`)
+
+**Examples**
+
+- `carioca build --env development`
+- `carioca build --mode spa`
+- `carioca build --port 8000`
+
+### `test`
+
+Runs the test suite
+
+**Options**
+
+[Supports all [Jest CLI flags](https://jestjs.io/docs/en/cli)
+
+**Examples**
+
+- `carioca test --watch`
+- `carioca test --coverage`
+- `carioca test --passWithNoTests --verbose`
+
+### `start`
+
+'Run the built application - make sure to `build` first!
+
+**Options**
+
+None
+
+**Examples**
+
+- `carioca start`
+
+## API
+
+### Switching modes (SSR or SPA)
+
+TODO: Documentation coming soon
+
+### Custom server for SSR
+
+TODO: Documentation coming soon
+
+### Service Workers and PWA's
+
+TODO: Documentation coming soon
+
+### Environment variables
+
+TODO: Documentation coming soon
+
+### Adding custom templates
+
+TODO: Documentation coming soon
+
+### SEO and the `<Page>` component
+
+TODO: Documentation coming soon
+
+### Internationalization
+
+TODO: Documentation coming soon
+
+### Custom configuration files
+
+TODO: Documentation coming soon `tsconfig.json`, `.eslintrc`, `.prettierrc`, and `jest.config.js`
 
 ## Contributing
 
@@ -120,9 +218,7 @@ You can run the test suite across all our projects by running `yarn test` from t
 
 ## Acknowledgements
 
-No doubt, this project shares about 80% of its logical inspiration from [Razzle](https://github.com/jaredpalmer/razzle/). However, this library has become quite bloated in my opinion, and is no longer maintained actively by Jared Palmer. I wanted a simpler, more opinionated library for abstracting away build concerns for building SSR and SPA-based web applications.
-
-I also internally forked [universal-hot-loader](https://github.com/yusinto/universal-hot-reload), which assists in serving our development builds (SSR and SPA) via HMR. This work is notoriously difficult, and is only made harder when you're running multiple, simultaneous Webpack builds, and proxying requests across ports - yuck. The project seems to have died a natural death, and I needed some additional modifications, so... "fork it". :wink:
+No doubt, this project shares about 80% of its logical inspiration from [Razzle](https://github.com/jaredpalmer/razzle/). However, this library has become quite bloated in my opinion, and is no longer maintained actively by Jared Palmer. I wanted a simpler, more opinionated library for abstracting away build concerns for building SSR and SPA-based web applications. If there's any message you should get from reading this paragraph, it's that I love Razzle with all my heart, but I grew frustrated when trying to work with the codebase and bend it to my will.
 
 ## License
 

@@ -11,14 +11,29 @@
     "type": "git",
     "url": "git+https://github.com/cereallarceny/carioca.git"
   },
+  "keywords": [
+    "carioca",
+    "javascript",
+    "isomorphic",
+    "universal",
+    "ssr",
+    "spa",
+    "react",
+    "preact",
+    "webpack",
+    "server-side-rendering",
+    "single-page-app"
+  ],
   "scripts": {
     "bootstrap": "yarn install && lerna bootstrap --use-workspaces",
     "clean": "lerna clean --yes && rm -rf node_modules",
     "reset": "yarn clean && yarn bootstrap",
     "release": "lerna publish",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "version": "auto-changelog -p ./packages/carioca-scripts/package.json && git add CHANGELOG.md"
   },
   "devDependencies": {
+    "auto-changelog": "^2.2.0",
     "lerna": "^3.22.1"
   }
 }
