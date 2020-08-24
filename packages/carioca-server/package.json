@@ -1,6 +1,6 @@
 {
   "name": "@carioca/server",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Default Express server to build server-rendered and single-page React applications with no configuration",
   "author": "Patrick Cason <me@patrickcason.com>",
   "license": "Apache-2.0",
