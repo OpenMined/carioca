@@ -20,5 +20,6 @@
     "webpack",
     "server-side-rendering",
     "single-page-app"
-  ]
+  ],
+  "gitHead": "28394f9c1293b1b32732c056152ffd18d7e796d3"
 }
