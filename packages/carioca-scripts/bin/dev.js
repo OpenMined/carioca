@@ -37,7 +37,7 @@ if (mode === 'spa') {
   onFinish();
 
   // Give it to UniversalHotReload
-  UniversalHotReload({ clientConfig });
+  UniversalHotReload({ clientConfig, verbose: false });
 } else {
   info('Creating the configuration for the server...');
   const serverConfig = createConfig({
@@ -52,5 +52,9 @@ if (mode === 'spa') {
   onFinish();
 
   // Give them to UniversalHotReload
-  UniversalHotReload({ clientConfig, serverConfig });
+  UniversalHotReload({
+    clientConfig,
+    serverConfig,
+    verbose: false,
+  });
 }
