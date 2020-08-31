@@ -25,11 +25,11 @@
     "carioca": "./index.js"
   },
   "dependencies": {
-    "@carioca/utils": "^0.1.2",
+    "@carioca/utils": "file:../utils",
     "chalk": "^4.1.0",
+    "commander": "^6.1.0",
     "cross-spawn": "^7.0.3",
     "http-server": "^0.12.3",
-    "sade": "^1.7.3",
     "universal-hot-reload": "https://github.com/cereallarceny/universal-hot-reload.git#adding-dev-server-overrides"
   },
   "gitHead": "28394f9c1293b1b32732c056152ffd18d7e796d3"

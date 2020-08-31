@@ -1,0 +1,30 @@
+{
+  "name": "%APP-NAME%",
+  "version": "0.1.0",
+  "keywords": [
+    "carioca"
+  ],
+  "carioca": {
+    "client": "src/client.jsx",
+    "server": "src/server.js"
+  },
+  "scripts": {
+    "dev": "carioca dev",
+    "dev:spa": "carioca dev --mode spa",
+    "build": "carioca build",
+    "build:spa": "carioca build --mode spa",
+    "build:dev": "carioca build --env development",
+    "start": "carioca start",
+    "test": "carioca test",
+    "test:watch": "carioca test --watch",
+    "test:coverage": "carioca test --coverage"
+  },
+  "dependencies": {
+    "@carioca/scripts": "latest",
+    "@carioca/server": "latest",
+    "express": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router-dom": "latest"
+  }
+}

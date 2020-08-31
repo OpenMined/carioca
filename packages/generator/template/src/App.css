@@ -1,0 +1,46 @@
+:root {
+  --backgroundColor: #fafafa;
+  --fontColor: #222;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  color: var(--fontColor);
+  background-color: var(--backgroundColor);
+}
+
+.home {
+  text-align: center;
+}
+
+.home-logo {
+  animation: home-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.home-header {
+  background-color: #222;
+  height: 180px;
+  padding: 20px;
+  color: white;
+}
+
+.home-value {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.home-button {
+  display: inline-block;
+}
+
+@keyframes home-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

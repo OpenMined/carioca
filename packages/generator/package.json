@@ -21,5 +21,15 @@
     "server-side-rendering",
     "single-page-app"
   ],
-  "gitHead": "28394f9c1293b1b32732c056152ffd18d7e796d3"
+  "bin": {
+    "create-carioca-app": "./index.js"
+  },
+  "gitHead": "28394f9c1293b1b32732c056152ffd18d7e796d3",
+  "dependencies": {
+    "@carioca/utils": "file:../utils",
+    "chalk": "^4.1.0",
+    "command-exists": "^1.2.9",
+    "commander": "^6.1.0",
+    "fs-extra": "^9.0.1"
+  }
 }
