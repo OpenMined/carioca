@@ -1,6 +1,6 @@
 {
   "name": "@carioca/scripts",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Node CLI scripts to help build server-rendered and single-page React applications with no configuration",
   "author": "Patrick Cason <me@patrickcason.com>",
   "license": "Apache-2.0",
