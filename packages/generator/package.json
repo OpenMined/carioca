@@ -24,6 +24,9 @@
   "bin": {
     "create-carioca-app": "./index.js"
   },
+  "scripts": {
+    "compile": "cp ../../.gitignore ./templates/main/.gitignore && cp ../../README.md ./templates/main/README.md"
+  },
   "gitHead": "28394f9c1293b1b32732c056152ffd18d7e796d3",
   "dependencies": {
     "@carioca/utils": "file:../utils",

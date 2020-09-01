@@ -10,9 +10,7 @@
   },
   "scripts": {
     "dev": "carioca dev",
-    "dev:spa": "carioca dev --mode spa",
     "build": "carioca build",
-    "build:spa": "carioca build --mode spa",
     "build:dev": "carioca build --env development",
     "start": "carioca start",
     "test": "carioca test",

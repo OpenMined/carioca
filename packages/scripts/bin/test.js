@@ -6,4 +6,4 @@ module.exports = (args) => {
 
   // Run the jest test suite with our jest config and all the optional flags the user provided
   runCommand('jest', ['--config', paths.jestConfigPath, ...args]);
-}
+};
