@@ -23,7 +23,7 @@
   ],
   "main": "dist/server.js",
   "scripts": {
-    "postinstall": "webpack --config webpack.config.js"
+    "compile": "webpack --config webpack.config.js"
   },
   "devDependencies": {
     "@babel/core": "^7.11.4",

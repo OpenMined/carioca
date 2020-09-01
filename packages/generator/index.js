@@ -13,7 +13,6 @@ const { runCommand, definePaths, info, success } = require('@carioca/utils');
 // Require our package.json file
 const pkg = require('./package.json');
 
-// TODO: GETTING ERROR: Couldn't find package "@carioca/utils@^0.1.2" required by "@carioca/scripts@latest" on the "npm" registry.
 // TODO: Remember to have a spa version and an ssr version
 // TODO: Copy .gitignore, LICENSE, and README files
 // TODO: Do inline documentation on everything
