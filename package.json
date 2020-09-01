@@ -32,11 +32,9 @@
     "clean": "lerna clean --yes && rm -rf node_modules",
     "reset": "yarn clean && yarn bootstrap",
     "release": "yarn reset && lerna run compile && lerna publish",
-    "test": "lerna run test",
-    "version": "lerna-changelog"
+    "test": "lerna run test"
   },
   "devDependencies": {
-    "lerna": "^3.22.1",
-    "lerna-changelog": "^1.0.1"
+    "lerna": "^3.22.1"
   }
 }
