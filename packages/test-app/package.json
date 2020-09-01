@@ -1,6 +1,6 @@
 {
   "name": "@carioca/test-app",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "description": "Build server-rendered and single-page React applications with no configuration",
   "author": "Patrick Cason <me@patrickcason.com>",
