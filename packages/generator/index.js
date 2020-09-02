@@ -5,31 +5,59 @@ const fs = require('fs-extra');
 const path = require('path');
 const commandExistsSync = require('command-exists').sync;
 
-// Require commander
-const { program } = require('commander');
+// Require inquirer
+const inquirer = require('inquirer');
 
 // Require a few functions from the utils project
-const { runCommand, definePaths, info, success } = require('@carioca/utils');
+const { runCommand, info, error, success } = require('@carioca/utils');
 
 // Require our package.json file
 const pkg = require('./package.json');
 
-// Define the commander script
-program
-  .version(pkg.version)
-  .arguments('<name> [mode]')
-  .action((name, mode = 'ssr') => {
+inquirer
+  .prompt([
+    {
+      type: 'input',
+      name: 'name',
+      message: 'What do you want your app to be called?',
+      default: 'My Carioca App',
+    },
+    {
+      type: 'input',
+      name: 'folder',
+      message: 'Where do you want it to be located?',
+      default: ({ name }) => name.split(' ').join('-').toLowerCase(),
+    },
+    {
+      type: 'list',
+      name: 'mode',
+      message: 'What type of app is this?',
+      choices: [
+        {
+          name: 'Server-side rendered (SSR)',
+          value: 'ssr',
+        },
+        {
+          name: 'Single-page application (SPA)',
+          value: 'spa',
+        },
+      ],
+    },
+  ])
+  .then(({ name, folder, mode }) => {
     info(`Creating app "${name}" in ${mode.toUpperCase()} mode`);
 
-    // Define our paths and get the app path that the user is wanting to run this in
-    const paths = definePaths();
-    const appPath = paths.resolveApp(name);
+    // Define the app path the user specified
+    const appPath = path.resolve(process.cwd(), folder);
 
     // Define the template being used and also get the template config file to we know what
     // files to exclude and modifications to make to those files
     const templatePath = path.resolve(__dirname, 'templates/main');
     const templateConfigName = 'carioca-template.js';
-    const templateConfig = require(path.resolve(templatePath, templateConfigName));
+    const templateConfig = require(path.resolve(
+      templatePath,
+      templateConfigName
+    ));
 
     // An empty array to store all the file names that we copy
     const files = [];
@@ -38,32 +66,32 @@ program
     fs.copySync(templatePath, appPath, {
       filter: (src, dest) => {
         // We never want to copy the Carioca configuration file from the template
-        if(src.includes(templateConfigName)) return false;
-        
+        if (src.includes(templateConfigName)) return false;
+
         // Make sure to get the list of files that the template wants us to exclude given the mode
         const excludes = templateConfig.excludes(mode) || [];
 
         // Exclude those files from being copied
-        if(excludes.includes(path.relative(appPath, dest))) return false;
+        if (excludes.includes(path.relative(appPath, dest))) return false;
 
         // If we haven't excluded the file yet, push it onto our files array
         files.push(dest);
 
         // And return true, meaning we want to copy this file
         return true;
-      }
+      },
     });
 
     info(`Making file modifications...`);
     files
-      .filter(path => fs.lstatSync(path).isFile())
-      .forEach(path => {
+      .filter((path) => fs.lstatSync(path).isFile())
+      .forEach((path) => {
         // For all the files in the files array, read the file
         let result = fs.readFileSync(path, { encoding: 'utf-8' });
 
         // And run various template-defined modifications against each file
-        result = templateConfig.modifications(path, result, name, mode);
-        
+        result = templateConfig.modifications(path, result, name, folder, mode);
+
         // Then re-write those modifications back to itself
         fs.writeFileSync(path, result, { encoding: 'utf-8' });
       });
@@ -71,12 +99,13 @@ program
     // Determine what package manager we're using and determine the way the dev script should be typed
     const packageManager = commandExistsSync('yarn') ? 'yarn' : 'npm';
     const devScript = templateConfig.devScript || 'dev';
-    const finalDevScript = packageManager === 'yarn' ? `yarn ${devScript}` : `npm run ${devScript}`;
+    const finalDevScript =
+      packageManager === 'yarn' ? `yarn ${devScript}` : `npm run ${devScript}`;
 
     info(`Installing dependencies with ${packageManager}...`);
 
     // "cd" into the new app directory
-    process.chdir(name);
+    process.chdir(folder);
 
     // And run the install script for the appropriate package manager
     runCommand(packageManager, ['install']).then(() => {
@@ -84,9 +113,17 @@ program
       process.chdir('../');
 
       // We're done! Show some helpful information
-      success(`App "${name}" created successfully!\n\nPlease run "cd ${name}" and "${finalDevScript}" to get started.`);
-    })
+      success(
+        `App "${name}" created successfully!\n\nPlease run "cd ${folder}" and "${finalDevScript}" to get started.`
+      );
+    });
   })
-
-// Tell our CLI to parse the arguments it's given and we're off to the races!
-program.parse(process.argv);
+  .catch((err) => {
+    if (err.isTtyError) {
+      // Prompt couldn't be rendered in the current environment
+      error("Prompt couldn't be rendered in the current environment", err);
+    } else {
+      // Something else when wrong
+      error('Something went wrong', err);
+    }
+  });
