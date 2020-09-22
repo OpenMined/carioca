@@ -959,7 +959,7 @@
   resolved "https://registry.yarnpkg.com/@carioca/server/-/server-0.1.5.tgz#da08287f4d257098d6669ece19ba87775c91692e"
   integrity sha512-nOj5yT66ElvyP/OYHeZ4wxN2nrHR0qeb+zZlm2w46+CvEP/V4T8wx+L+AmKdTBjvd0y0Y+8fL8S8Hwo99JcFJw==
 
-"@carioca/utils@latest":
+"@carioca/utils@^0.1.4", "@carioca/utils@latest":
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/@carioca/utils/-/utils-0.1.4.tgz#88ce75cd5810e84ac0f5deaa911eeccb347da097"
   integrity sha512-+PFzsJSe9hZz/7EIQKMb1gY0pGbfnxzywbQTZqXnHHQu/qjU576EMk3g/Wkm32fpO1iNHrLlhnNOJvXqg+38xQ==
