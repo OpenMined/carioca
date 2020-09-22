@@ -1,6 +1,6 @@
 {
   "name": "@carioca/test-app",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "description": "Build server-rendered and single-page React applications with no configuration",
   "author": "Patrick Cason <me@patrickcason.com>",
@@ -38,7 +38,7 @@
     "test:coverage": "carioca test --coverage"
   },
   "dependencies": {
-    "@carioca/scripts": "0.3.0",
+    "@carioca/scripts": "^0.3.1",
     "@carioca/server": "0.3.0",
     "express": "^4.17.1",
     "react": "^16.13.1",

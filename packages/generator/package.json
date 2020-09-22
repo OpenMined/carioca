@@ -1,6 +1,6 @@
 {
   "name": "@carioca/generator",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A web app generator CLI to build server-rendered and single-page React applications with no configuration",
   "author": "Patrick Cason <me@patrickcason.com>",
   "license": "Apache-2.0",
