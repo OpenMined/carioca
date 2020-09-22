@@ -175,11 +175,15 @@ const definePaths = () => {
       `${relativePaths.outputDirectory}/assets.json`
     ),
     clientEntry: resolveApp(parsedPackageFile['carioca'].client),
-    serverEntry: resolveApp(parsedPackageFile['carioca'].server),
     publicHTMLTemplate: resolveApp(
       `${relativePaths.publicDirectory}/index.html`
     ),
   };
+
+  // If there's a server entry in the package.json file, add it to the paths
+  if (parsedPackageFile['carioca'].server) {
+    paths.serverEntry = resolveApp(parsedPackageFile['carioca'].server);
+  }
 
   // Check for the existence of various configuration files in the appRoot
   // If they do not exist, create them, and return their location

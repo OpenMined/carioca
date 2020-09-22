@@ -22,7 +22,7 @@
     "single-page-app"
   ],
   "bin": {
-    "create-carioca-app": "./index.js"
+    "init": "./index.js"
   },
   "scripts": {
     "compile": "cp ../../.gitignore ./templates/main/.gitignore && cp ../../README.md ./templates/main/README.md"
