@@ -28,9 +28,8 @@
     "single-page-app"
   ],
   "scripts": {
-    "bootstrap": "yarn install && lerna bootstrap --use-workspaces",
     "clean": "lerna clean --yes && rm -rf node_modules",
-    "reset": "yarn clean && yarn bootstrap",
+    "reset": "yarn clean && lerna bootstrap",
     "release": "yarn reset && lerna run compile && lerna publish",
     "test": "lerna run test"
   },
