@@ -38,8 +38,8 @@
     "test:coverage": "carioca test --coverage"
   },
   "dependencies": {
-    "@carioca/scripts": "file:../scripts",
-    "@carioca/server": "file:../server",
+    "@carioca/scripts": "latest",
+    "@carioca/server": "latest",
     "express": "^4.17.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

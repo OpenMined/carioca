@@ -942,19 +942,27 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@carioca/scripts@file:packages/scripts":
+"@carioca/scripts@latest":
   version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@carioca/scripts/-/scripts-0.1.4.tgz#d06bb9965837430b33d4f311ecd58c61996a209e"
+  integrity sha512-oMVumQfx+0a3KRYYxGQhtzVHfes3iODtkMKxbPyY1arCIlxsCnVnUkvJSfD23BUrsjqosufJR2+fqfoCqUqzCA==
   dependencies:
-    "@carioca/utils" "file:../../Library/Caches/Yarn/v6/npm-@carioca-scripts-0.1.4-9bfcbf92-1252-44e5-bc04-34d6355bcd52-1600772817985/node_modules/@carioca/utils"
+    "@carioca/utils" "^0.1.4"
+    chalk "^4.1.0"
     commander "^6.1.0"
+    cross-spawn "^7.0.3"
     http-server "^0.12.3"
-    universal-hot-reload "^3.3.7"
+    universal-hot-reload "https://github.com/cereallarceny/universal-hot-reload.git#adding-dev-server-overrides"
 
-"@carioca/server@file:packages/server":
+"@carioca/server@latest":
   version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@carioca/server/-/server-0.1.5.tgz#da08287f4d257098d6669ece19ba87775c91692e"
+  integrity sha512-nOj5yT66ElvyP/OYHeZ4wxN2nrHR0qeb+zZlm2w46+CvEP/V4T8wx+L+AmKdTBjvd0y0Y+8fL8S8Hwo99JcFJw==
 
-"@carioca/utils@file:packages/utils":
+"@carioca/utils@latest":
   version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@carioca/utils/-/utils-0.1.4.tgz#88ce75cd5810e84ac0f5deaa911eeccb347da097"
+  integrity sha512-+PFzsJSe9hZz/7EIQKMb1gY0pGbfnxzywbQTZqXnHHQu/qjU576EMk3g/Wkm32fpO1iNHrLlhnNOJvXqg+38xQ==
   dependencies:
     "@types/jest" "^26.0.9"
     "@types/react" "^16.9.44"
@@ -963,7 +971,6 @@
     "@typescript-eslint/eslint-plugin" "^3.8.0"
     "@typescript-eslint/parser" "^3.8.0"
     assets-webpack-plugin "^5.1.1"
-    chalk "^4.1.0"
     clean-webpack-plugin "^3.0.0"
     copy-webpack-plugin "^6.0.3"
     css-loader "^4.2.0"
@@ -975,7 +982,6 @@
     eslint-plugin-prettier "^3.1.4"
     eslint-plugin-react "^7.20.5"
     eslint-plugin-react-hooks "^4.0.8"
-    execa "^4.0.3"
     file-loader "^6.0.0"
     fork-ts-checker-webpack-plugin "^5.0.14"
     html-webpack-plugin "^4.3.0"
@@ -4175,7 +4181,7 @@ cross-spawn@^6.0.0, cross-spawn@^6.0.5:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-cross-spawn@^7.0.0, cross-spawn@^7.0.2:
+cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
   integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
@@ -12068,6 +12074,19 @@ universal-hot-reload@^3.3.7:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/universal-hot-reload/-/universal-hot-reload-3.3.7.tgz#a496ddf83ecec45897ec552f46370356bd53730c"
   integrity sha512-GS5m5lwkpWQo0ZsBgfezkAY+eze63Hq/bcDFOuDKU54Hj1nlFUadydWMgXBW7Z+IVJaK09c42ShesFrAjEUHuQ==
+  dependencies:
+    "@types/webpack" "4.41.21"
+    babel-loader "8.1.0"
+    clear-require "^3.0.0"
+    idempotent-babel-polyfill "7.4.4"
+    ts-loader "8.0.3"
+    webpack "4.44.1"
+    webpack-dev-server "3.11.0"
+    webpack-node-externals "2.5.2"
+
+"universal-hot-reload@https://github.com/cereallarceny/universal-hot-reload.git#adding-dev-server-overrides":
+  version "3.3.4"
+  resolved "https://github.com/cereallarceny/universal-hot-reload.git#43048dd6e63f64887f83ce34b5d5dc7a83b39f99"
   dependencies:
     "@types/webpack" "4.41.21"
     babel-loader "8.1.0"
