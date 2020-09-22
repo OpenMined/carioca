@@ -28,7 +28,7 @@
     "@carioca/utils": "file:../utils",
     "commander": "^6.1.0",
     "http-server": "^0.12.3",
-    "universal-hot-reload": "https://github.com/cereallarceny/universal-hot-reload.git#adding-dev-server-overrides"
+    "universal-hot-reload": "^3.3.7"
   },
   "gitHead": "28394f9c1293b1b32732c056152ffd18d7e796d3"
 }

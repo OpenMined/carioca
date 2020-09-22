@@ -945,10 +945,10 @@
 "@carioca/scripts@file:packages/scripts":
   version "0.1.4"
   dependencies:
-    "@carioca/utils" "file:../../Library/Caches/Yarn/v6/npm-@carioca-scripts-0.1.4-87e0e02c-e7f8-445a-8663-2e5298384b12-1599062018048/node_modules/@carioca/utils"
+    "@carioca/utils" "file:../../Library/Caches/Yarn/v6/npm-@carioca-scripts-0.1.4-9bfcbf92-1252-44e5-bc04-34d6355bcd52-1600772817985/node_modules/@carioca/utils"
     commander "^6.1.0"
     http-server "^0.12.3"
-    universal-hot-reload "https://github.com/cereallarceny/universal-hot-reload.git#adding-dev-server-overrides"
+    universal-hot-reload "^3.3.7"
 
 "@carioca/server@file:packages/server":
   version "0.1.5"
@@ -963,6 +963,7 @@
     "@typescript-eslint/eslint-plugin" "^3.8.0"
     "@typescript-eslint/parser" "^3.8.0"
     assets-webpack-plugin "^5.1.1"
+    chalk "^4.1.0"
     clean-webpack-plugin "^3.0.0"
     copy-webpack-plugin "^6.0.3"
     css-loader "^4.2.0"
@@ -12063,9 +12064,10 @@ unique-slug@^2.0.0:
   dependencies:
     imurmurhash "^0.1.4"
 
-"universal-hot-reload@https://github.com/cereallarceny/universal-hot-reload.git#adding-dev-server-overrides":
-  version "3.3.4"
-  resolved "https://github.com/cereallarceny/universal-hot-reload.git#265f35e2942b5415bf562830581a3693b6aeb4a3"
+universal-hot-reload@^3.3.7:
+  version "3.3.7"
+  resolved "https://registry.yarnpkg.com/universal-hot-reload/-/universal-hot-reload-3.3.7.tgz#a496ddf83ecec45897ec552f46370356bd53730c"
+  integrity sha512-GS5m5lwkpWQo0ZsBgfezkAY+eze63Hq/bcDFOuDKU54Hj1nlFUadydWMgXBW7Z+IVJaK09c42ShesFrAjEUHuQ==
   dependencies:
     "@types/webpack" "4.41.21"
     babel-loader "8.1.0"

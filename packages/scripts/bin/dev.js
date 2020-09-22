@@ -45,7 +45,6 @@ module.exports = (mode, port) => {
     UniversalHotReload({
       clientConfig,
       serverConfig,
-      verbose: false,
     });
   }
-}
+};
