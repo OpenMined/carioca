@@ -82,9 +82,25 @@ inquirer
       },
     });
 
+    const nonCodeFiles = [
+      '.ico',
+      '.png',
+      '.jpg',
+      '.jpeg',
+      '.svg',
+      '.bmp',
+      '.webp',
+      '.gif',
+      '.pdf',
+    ];
+
     info(`Making file modifications...`);
     files
-      .filter((path) => fs.lstatSync(path).isFile())
+      .filter(
+        (path) =>
+          fs.lstatSync(path).isFile() &&
+          !nonCodeFiles.some((f) => path.includes(f))
+      )
       .forEach((path) => {
         // For all the files in the files array, read the file
         let result = fs.readFileSync(path, { encoding: 'utf-8' });

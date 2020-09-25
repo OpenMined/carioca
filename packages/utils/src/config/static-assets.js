@@ -3,7 +3,7 @@ module.exports = () => ({
   module: {
     rules: [
       {
-        test: /\.(jpg|jpeg|png|svg|bmp|webp|gif)$/,
+        test: /\.(ico|jpg|jpeg|png|svg|bmp|webp|gif|pdf)$/,
         use: {
           loader: 'url-loader',
           options: {
