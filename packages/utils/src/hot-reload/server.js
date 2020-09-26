@@ -15,7 +15,7 @@ const initHttpServer = (bundlePath) => {
     server = require(bundlePath).default;
   } catch (e) {
     // If we can't, log an error
-    error(`Error creating server at ${bundlePath}`, e);
+    error('Error creating server', e);
     return null;
   }
 
