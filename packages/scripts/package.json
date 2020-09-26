@@ -27,8 +27,7 @@
   "dependencies": {
     "@carioca/utils": "^0.3.2",
     "commander": "^6.1.0",
-    "http-server": "^0.12.3",
-    "universal-hot-reload": "^3.3.7"
+    "http-server": "^0.12.3"
   },
   "gitHead": "28394f9c1293b1b32732c056152ffd18d7e796d3"
 }

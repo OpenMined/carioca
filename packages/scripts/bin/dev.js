@@ -1,5 +1,10 @@
-const UniversalHotReload = require('universal-hot-reload').default;
-const { createConfig, definePaths, info, success } = require('@carioca/utils');
+const {
+  createConfig,
+  definePaths,
+  hotReload,
+  info,
+  success,
+} = require('@carioca/utils');
 
 module.exports = (mode, port) => {
   // What to call when we're done
@@ -26,8 +31,8 @@ module.exports = (mode, port) => {
   if (mode === 'spa') {
     onFinish();
 
-    // Give it to UniversalHotReload
-    UniversalHotReload({ clientConfig, verbose: false });
+    // Give it to hotReload
+    hotReload({ clientConfig });
   } else {
     info('Creating the configuration for the server...');
     const serverConfig = createConfig({
@@ -41,8 +46,8 @@ module.exports = (mode, port) => {
 
     onFinish();
 
-    // Give them to UniversalHotReload
-    UniversalHotReload({
+    // Give them to hotReload
+    hotReload({
       clientConfig,
       serverConfig,
     });

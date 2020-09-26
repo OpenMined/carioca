@@ -1,6 +1,7 @@
-// Define paths, create config, log, and run command
+// Define paths, create config, hot reload, log, and run command
 const definePaths = require('./define-paths');
 const createConfig = require('./create-config');
+const hotReload = require('./hot-reload');
 const { error, warning, success, info } = require('./log');
 const runCommand = require('./run-command');
 
@@ -36,6 +37,7 @@ const compileChunks = require('./config/chunks');
 module.exports = {
   definePaths,
   createConfig,
+  hotReload,
   error,
   warning,
   success,
