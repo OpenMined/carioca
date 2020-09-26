@@ -30,10 +30,16 @@
   "scripts": {
     "clean": "lerna clean --yes && rm -rf node_modules",
     "reset": "yarn clean && lerna bootstrap",
-    "release": "yarn reset && lerna run compile && lerna publish",
+    "release": "yarn reset && lerna publish",
     "test": "lerna run test"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lerna run compile"
+    }
+  },
   "devDependencies": {
+    "husky": "^4.3.0",
     "lerna": "^3.22.1"
   }
 }

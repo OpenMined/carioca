@@ -52,11 +52,12 @@ Here's a relatively exhaustive list of opinions that carioca has about your buil
 ### Creating a new project
 
 ```bash
-npx @carioca/generator my-app
-cd my-app
+npx @carioca/generator
 ```
 
-Once you've scaffolded your new web application you can run:
+... and run through the prompt that follows!
+
+Once you've finished, you can run:
 
 - `yarn dev` (or `npm run dev`) to start the development server ([docs](#dev))
 - `yarn build` (or `npm run build`) to build your application ([docs](#build))
