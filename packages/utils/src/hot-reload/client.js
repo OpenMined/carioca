@@ -2,7 +2,7 @@ const url = require('url');
 const webpack = require('webpack');
 const webpackDevServer = require('webpack-dev-server');
 
-module.exports = (clientConfig) => {
+module.exports = (clientConfig, callback) => {
   // Get some variables from the clientConfig
   const {
     entry,
@@ -34,6 +34,11 @@ module.exports = (clientConfig) => {
 
   // Create a webpack compiler from the amended config
   const compiler = webpack(clientConfig);
+
+  // When we finish the client compilation, trigger the callback
+  compiler.hooks.done.tap('FinishedClientCompilation', () => {
+    if (callback) callback();
+  });
 
   // Create a webpack-dev-server from that config and also pass a default config
   const server = new webpackDevServer(compiler, {

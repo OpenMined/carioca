@@ -6,8 +6,10 @@ const watchServer = require('./server');
 
 module.exports = ({ clientConfig, serverConfig }) => {
   // Start webpack-dev-server on one port after the serverConfig's port
-  if (clientConfig) watchClient(clientConfig);
-
-  // Start a webpack.watch() on all server files with full HMR support
-  if (serverConfig) watchServer(serverConfig);
+  if (clientConfig) {
+    watchClient(clientConfig, () => {
+      // Start a webpack.watch() on all server files with full HMR support
+      if (serverConfig) watchServer(serverConfig);
+    });
+  }
 };
