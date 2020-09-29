@@ -40,6 +40,7 @@
   "dependencies": {
     "@carioca/scripts": "file:../packages/scripts",
     "@carioca/server": "file:../packages/server",
+    "@carioca/utils": "file:../packages/utils",
     "express": "latest",
     "react": "latest",
     "react-dom": "latest",
