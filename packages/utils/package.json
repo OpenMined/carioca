@@ -1,6 +1,6 @@
 {
   "name": "@carioca/utils",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Helper functions to build server-rendered and single-page React applications with no configuration",
   "author": "Patrick Cason <me@patrickcason.com>",
   "license": "Apache-2.0",
