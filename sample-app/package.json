@@ -40,10 +40,12 @@
   "dependencies": {
     "@carioca/scripts": "file:../packages/scripts",
     "@carioca/server": "file:../packages/server",
-    "@carioca/utils": "file:../packages/utils",
     "express": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "latest"
+  },
+  "resolutions": {
+    "@carioca/scripts/@carioca/utils": "file:../packages/utils"
   }
 }
