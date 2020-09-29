@@ -29,17 +29,18 @@ const defineConfigFile = (
   output
 ) => {
   // Get the requested config file from the appRoot
+  // Also get the theoretical locations of the file in the temp and templates directories
   const configFileAppPath = resolveApp(name);
-
-  // Does the requested config file exist at the root?
-  const configFileExists = fs.existsSync(configFileAppPath);
-
-  // If it does then use it... if not, create one and return that path
-  if (configFileExists) return configFileAppPath;
-
-  // Define our requested config template file
+  const configFileTempPath = resolveSelf(`tmp/${name}`);
   const configFileTemplatePath = resolveSelf(`templates/${name}`);
 
+  // Does the requested config file exist at the root... if so, return it
+  if (fs.existsSync(configFileAppPath)) return configFileAppPath;
+
+  // Does the requested config file exist at the temp directory... if so, return it
+  if (fs.existsSync(configFileTempPath)) return configFileTempPath;
+
+  // Otherwise...
   // Read that template file and parse it as JSON
   let configFileTemplate = safeJSONParse(
     fs.readFileSync(configFileTemplatePath, {

@@ -11,9 +11,6 @@ const inquirer = require('inquirer');
 // Require a few functions from the utils project
 const { runCommand, info, error, success } = require('@carioca/utils');
 
-// Require our package.json file
-const pkg = require('./package.json');
-
 inquirer
   .prompt([
     {
