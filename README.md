@@ -1,4 +1,4 @@
-![Carioca](packages/test-app/src/logo.png)
+![Carioca](sample-app/src/logo.png)
 
 # Carioca
 
@@ -192,7 +192,6 @@ Inside of the `packages` folder sit all of the various projects in the carioca e
 `generator` - A CLI to generate a full app when the user is starting from scratch (think of this as the equivalent to `npx create-react-app my-app`). This is deployed to NPM as `@carioca/generator`.
 `scripts` - A CLI to run the various `build`, `dev`, `test`, and `start` functions that all implementers will need to call. If you're familiar with `react-scripts`, this is carica's equivalent project. This is deployed to NPM as `@carioca/scripts`.
 `server` - A sample server and some helper functions to make building the server portion of SSR a little easier. This is deployed to NPM as `@carioca/server`.
-`test-app` - A test application that we use to test everything. It has local dependencies to `scripts` and `server` to make local development easier. This is not deployed to NPM.
 `utils` - A project to help organize all shared code between the other modules. This is not deployed to NPM.
 
 ### Setting up the development environment
@@ -208,10 +207,8 @@ If you make a change to the `generators`, `scripts`, `server`, or `utils` packag
 1. Run the initial `yarn bootstrap` command
 2. Make a change in some file - do your work here!
 3. **From the root of the project**, run `yarn reset`
-4. \*\*From the `packages/test-app` folder, run the command that will trigger your change (`yarn dev`, `yarn build`, `yarn test`, `yarn start`, etc.)
+4. \*\*From the `sample-app` folder, run the command that will trigger your change (`yarn dev`, `yarn build`, `yarn test`, `yarn start`, etc.)
 5. If you need to fix something, go back to step 2
-
-If you want to make a change to the `test-app` itself, you generally don't need to run `yarn reset` every time since the dependencies are already wired together locally.
 
 ### Testing
 
