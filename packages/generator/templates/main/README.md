@@ -41,6 +41,7 @@ There's no shortage of generator projects out there! Two of the most popular are
 
 Here's a relatively exhaustive list of opinions that carioca has about your build process:
 
+- You must have all your server logic (if you're running SSR) in its own folder. This allows Webpack to detect when an update is for the server and when it's for the client (and therefore, which server to restart).
 - You must use **React** and **React Router**, although technically it's fine if you only have a single route and don't use any React Router code yourself.
 - You must use **Jest** for testing, we also provide **react-test-renderer** behind the scenes. We also support [overriding the default Jest configuration](#custom-configuration-files).
 - You must use **Prettier** for style enforcement and **ESLint** for enforcement of best-practices, although you may [override the configuration of both](#custom-configuration-files).
