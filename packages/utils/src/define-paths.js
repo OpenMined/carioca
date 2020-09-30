@@ -1,5 +1,5 @@
 // Import some Node libraries
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 
 // A simple recursive function to ensure that a directory exists before writing a file
@@ -183,7 +183,15 @@ const definePaths = () => {
 
   // If there's a server entry in the package.json file, add it to the paths
   if (parsedPackageFile['carioca'].server) {
-    paths.serverEntry = resolveApp(parsedPackageFile['carioca'].server);
+    let serverEntry = parsedPackageFile['carioca'].server;
+
+    // If the serverEntry is a file
+    if (fs.lstatSync(parsedPackageFile['carioca'].server).isFile()) {
+      // Make sure that we're getting the parent folder, that's what we want!
+      serverEntry = path.dirname(parsedPackageFile['carioca'].server);
+    }
+
+    paths.serverEntry = resolveApp(serverEntry);
   }
 
   // Check for the existence of various configuration files in the appRoot

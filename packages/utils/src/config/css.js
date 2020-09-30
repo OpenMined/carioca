@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PostCSSPresetEnv = require('postcss-preset-env');
 
 // Define the loader for compiling CSS
-module.exports = ({ IS_BUILD, IS_CLIENT, IS_LIVE }) => {
+module.exports = ({ IS_BUILD, IS_CLIENT, IS_LIVE }, separatePaths) => {
   // Use the css-loader and postcss-loader with minification
   const cssRules = [
     {
@@ -31,7 +31,7 @@ module.exports = ({ IS_BUILD, IS_CLIENT, IS_LIVE }) => {
         {
           test: /\.css$/,
           use: cssRules,
-          exclude: /node_modules/,
+          ...separatePaths,
         },
       ],
     },

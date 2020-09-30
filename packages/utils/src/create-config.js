@@ -54,6 +54,13 @@ module.exports = (config) => {
     PORT: config.port,
   };
 
+  const separatePaths = {
+    include: [config.paths.sourceDirectory],
+    exclude: vars.IS_CLIENT
+      ? [/node_modules/, config.paths.serverEntry]
+      : [/node_modules/],
+  };
+
   // Make sure the NODE_ENV is set to the mode
   process.env.NODE_ENV = config.env;
 
@@ -69,10 +76,10 @@ module.exports = (config) => {
     : setServerOutput(config.paths, vars);
   const resolves = setResolves(config.paths);
   const envs = setEnvironmentVariables(config.paths, vars);
-  const javascript = compileJSAndTS(config.paths, vars);
-  const css = compileCSS(vars);
-  const csv = compileCSV();
-  const staticAssets = compileStaticAssets();
+  const javascript = compileJSAndTS(config.paths, vars, separatePaths);
+  const css = compileCSS(vars, separatePaths);
+  const csv = compileCSV(separatePaths);
+  const staticAssets = compileStaticAssets(separatePaths);
   const sourceMaps = compileSourceMaps(vars);
   const assetsManifest = compileAssetsManifest(config.paths);
   const copyPublic = runCopyPublic(config.paths);
