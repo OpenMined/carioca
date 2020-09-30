@@ -1,34 +1,29 @@
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+
+/*
+TODO:
+- ESLint
+- Jest
+*/
 
 // Define the loader for compiling both Javascript and Typescript
-// Controversial decision: we don't use babel-loader, just ts-loader... why bundle twice?
-module.exports = (paths, { IS_PROD }) => ({
+module.exports = (paths) => ({
   plugins: [
-    new ForkTsCheckerWebpackPlugin({
-      typescript: {
-        configFile: paths.tsConfigPath, // Make sure we know where to find the tsconfig.json file
-        memoryLimit: 4096, // Make sure we have enough memory
-      },
-      eslint: IS_PROD
-        ? undefined
-        : {
-            files: `${paths.sourceDirectory}/**/*.{ts,tsx,js,jsx}`,
-            options: {
-              configFile: paths.esLintConfigPath, // Make sure the tsconfig.json file knows about the .eslintrc file
-            },
-          },
+    new ESLintPlugin({
+      eslintPath: paths.esLintConfigPath,
+      files: paths.sourceDirectory,
+      extensions: ['js', 'jsx', 'ts', 'tsx'],
     }),
   ],
   module: {
     rules: [
       {
         test: /\.(j|t)sx?$/,
-        loader: 'ts-loader',
-        options: {
-          configFile: paths.tsConfigPath, // Make sure we know where to find the tsconfig.json file
-          transpileOnly: true, // Performance optimization
-        },
+        loader: 'babel-loader',
         exclude: /node_modules/,
+        options: {
+          configFile: paths.babelConfigPath,
+        },
       },
     ],
   },

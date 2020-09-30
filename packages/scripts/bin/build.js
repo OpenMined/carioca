@@ -4,6 +4,7 @@ const {
   definePaths,
   info,
   error,
+  warning,
   success,
 } = require('@carioca/utils');
 
@@ -102,4 +103,4 @@ module.exports = (env, mode, port) => {
       });
     }
   });
-}
+};

@@ -1,8 +1,10 @@
+const { jsWithTs: tsjPreset } = require('ts-jest/presets');
+
 module.exports = {
   /* CUSTOM JEST HERE */
-  preset: 'ts-jest',
+  preset: 'ts-jest/presets/js-with-ts',
   transform: {
-    '^.+\\.[jt]sx?$': 'ts-jest'
+    ...tsjPreset.transform
   },
   moduleDirectories: ['node_modules'],
   testEnvironment: 'node',

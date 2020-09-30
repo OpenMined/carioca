@@ -1,10 +1,8 @@
 {
-  "parser": "@typescript-eslint/parser",
+  "parser": "@babel/eslint-parser",
   "extends": [
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
     "plugin:prettier/recommended"
   ],
   "parserOptions": {
@@ -17,10 +15,7 @@
   "rules": {
     "prettier/prettier": "warn",
     "react/prop-types": "off",
-    "react/display-name": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-var-requires": "off"
+    "react/display-name": "off"
   },
   "settings": {
     "react": {
