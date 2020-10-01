@@ -23,8 +23,8 @@
     "single-page-app"
   ],
   "carioca": {
-    "client": "src/client.jsx",
-    "server": "src/server.js"
+    "client": "src/client.tsx",
+    "server": "src/server.ts"
   },
   "scripts": {
     "dev": "carioca dev",
