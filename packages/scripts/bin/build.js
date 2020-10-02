@@ -25,11 +25,15 @@ module.exports = (env, mode, port) => {
         const info = stats.toJson();
 
         if (stats.hasErrors()) {
-          error(`Error when compiling the ${target}`, info.errors);
+          info.errors.forEach((error) => {
+            console.log(error);
+          });
         }
 
         if (stats.hasWarnings()) {
-          warning(`Warning when compiling the ${target}`, info.warnings);
+          info.warnings.forEach((warning) => {
+            console.log(warning);
+          });
         }
       }
     }
@@ -102,4 +106,4 @@ module.exports = (env, mode, port) => {
       });
     }
   });
-}
+};

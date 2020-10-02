@@ -3,7 +3,7 @@ import logo from './logo.png';
 
 import './App.css';
 
-export default () => {
+const App = () => {
   const [value, setValue] = useState(0);
 
   return (
@@ -19,3 +19,5 @@ export default () => {
     </div>
   );
 };
+
+export default App;

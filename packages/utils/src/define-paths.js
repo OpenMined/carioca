@@ -49,7 +49,9 @@ const defineConfigFile = (
   );
 
   // Run the provided modifications against that template
-  configFileTemplate.data = modifications(configFileTemplate.data);
+  if (modifications) {
+    configFileTemplate.data = modifications(configFileTemplate.data);
+  }
 
   // Define the path where the output requested config file will be generated to
   const outputConfigFilePath = output || resolveSelf(`tmp/${name}`);
@@ -84,23 +86,20 @@ const defineTSConfigFile = (paths) =>
     return template;
   });
 
+const defineBabelConfigFile = (paths) => defineConfigFile(paths, '.babelrc');
+
 // Optionally create, and then return the location of the main .eslintrc file
 const defineESLintConfigFile = (paths) =>
   defineConfigFile(paths, '.eslintrc', (template) => {
     // Tell ESLint where our tsconfig.json file is located
-    template.parserOptions.project = paths.tsConfigPath;
+    template.overrides[1].parserOptions.project = paths.tsConfigPath;
 
     return template;
   });
 
 // Optionally create, and then return the location of the main .prettierrc file
 const definePrettierConfigFile = (paths) =>
-  defineConfigFile(
-    paths,
-    '.prettierrc',
-    (template) => template,
-    paths.resolveApp('.prettierrc')
-  );
+  defineConfigFile(paths, '.prettierrc', null, paths.resolveApp('.prettierrc'));
 
 // Optionally create, and then return the location of the main jest.config.js file
 const defineJestConfigFile = (paths) =>
@@ -189,9 +188,10 @@ const definePaths = () => {
   // Check for the existence of various configuration files in the appRoot
   // If they do not exist, create them, and return their location
   paths.tsConfigPath = defineTSConfigFile(paths);
+  paths.babelConfigPath = defineBabelConfigFile(paths);
   paths.esLintConfigPath = defineESLintConfigFile(paths);
-  paths.prettierConfigPath = definePrettierConfigFile(paths);
-  paths.jestConfigPath = defineJestConfigFile(paths);
+  // paths.prettierConfigPath = definePrettierConfigFile(paths);
+  // paths.jestConfigPath = defineJestConfigFile(paths);
 
   return paths;
 };
