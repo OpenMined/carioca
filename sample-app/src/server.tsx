@@ -34,7 +34,7 @@ const createServer = () => {
       if (context.url) {
         res.redirect(context.url);
       } else {
-        let html = caipirinha(template, assets, markup);
+        const html = caipirinha(template, assets, markup);
 
         res.status(200).send(html);
       }

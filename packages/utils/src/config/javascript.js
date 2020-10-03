@@ -9,12 +9,6 @@ module.exports = (paths) => {
     })
   );
 
-  const babelConfig = JSON.parse(
-    fs.readFileSync(paths.babelConfigPath, {
-      encoding: 'utf-8',
-    })
-  );
-
   return {
     plugins: [
       new ESLintPlugin({
@@ -30,7 +24,9 @@ module.exports = (paths) => {
           include: paths.sourceDirectory,
           exclude: /node_modules/,
           loader: 'babel-loader',
-          options: babelConfig,
+          options: {
+            configFile: paths.babelConfigPath,
+          },
         },
       ],
     },

@@ -24,7 +24,7 @@
   ],
   "carioca": {
     "client": "src/client.tsx",
-    "server": "src/server.ts"
+    "server": "src/server.tsx"
   },
   "scripts": {
     "dev": "carioca dev",

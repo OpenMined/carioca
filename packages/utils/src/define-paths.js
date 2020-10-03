@@ -86,13 +86,15 @@ const defineTSConfigFile = (paths) =>
     return template;
   });
 
-const defineBabelConfigFile = (paths) => defineConfigFile(paths, '.babelrc');
+const defineBabelConfigFile = (paths) =>
+  defineConfigFile(paths, 'babel.config.json');
 
 // Optionally create, and then return the location of the main .eslintrc file
 const defineESLintConfigFile = (paths) =>
   defineConfigFile(paths, '.eslintrc', (template) => {
     // Tell ESLint where our tsconfig.json file is located
-    template.overrides[1].parserOptions.project = paths.tsConfigPath;
+    template.parserOptions = {};
+    template.parserOptions.project = paths.tsConfigPath;
 
     return template;
   });
