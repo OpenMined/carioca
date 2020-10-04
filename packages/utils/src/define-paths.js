@@ -87,7 +87,7 @@ const defineTSConfigFile = (paths) =>
   });
 
 const defineBabelConfigFile = (paths) =>
-  defineConfigFile(paths, 'babel.config.json');
+  defineConfigFile(paths, 'babel.config.js');
 
 // Optionally create, and then return the location of the main .eslintrc file
 const defineESLintConfigFile = (paths) =>
@@ -112,11 +112,6 @@ const defineJestConfigFile = (paths) =>
     // Define our overrides
     const custom = [
       `rootDir: '${paths.appRoot}'`,
-      `globals: {
-        'ts-jest': {
-          tsConfig: '${paths.tsConfigPath}'
-        }
-      }`,
       `collectCoverageFrom: [
         '<rootDir>/${paths.relativePaths.sourceDirectory}/**/*.{js,jsx,ts,tsx}',
         '!<rootDir>/node_modules/**/*',
@@ -193,7 +188,7 @@ const definePaths = () => {
   paths.babelConfigPath = defineBabelConfigFile(paths);
   paths.esLintConfigPath = defineESLintConfigFile(paths);
   // paths.prettierConfigPath = definePrettierConfigFile(paths);
-  // paths.jestConfigPath = defineJestConfigFile(paths);
+  paths.jestConfigPath = defineJestConfigFile(paths);
 
   return paths;
 };
