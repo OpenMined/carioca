@@ -1,9 +1,9 @@
-import React, { useState, FC } from 'react';
+import React, { useState } from 'react';
 import logo from './logo.png';
 
 import './App.css';
 
-const App: FC = () => {
+const App = () => {
   const [value, setValue] = useState(0);
 
   return (

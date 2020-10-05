@@ -93,8 +93,7 @@ const defineBabelConfigFile = (paths) =>
 const defineESLintConfigFile = (paths) =>
   defineConfigFile(paths, '.eslintrc', (template) => {
     // Tell ESLint where our tsconfig.json file is located
-    template.parserOptions = {};
-    template.parserOptions.project = paths.tsConfigPath;
+    template.overrides[0].parserOptions.project = paths.tsConfigPath;
 
     return template;
   });
@@ -122,6 +121,12 @@ const defineJestConfigFile = (paths) =>
 
     // Find an replace the overrides at the matching string
     template = template.replace(match, `${custom.join(',')},`);
+
+    // Tell Jest where it can find our configuration
+    template = template.replace(
+      '{ configFile: null }',
+      `{ configFile: '${paths.babelConfigPath}' }`
+    );
 
     return template;
   });

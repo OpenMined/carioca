@@ -7,7 +7,7 @@
   ],
   "carioca": {
     "client": "src/client.jsx",
-    "server": "src/server.js"
+    "server": "src/server.jsx"
   },
   "scripts": {
     "dev": "carioca dev",

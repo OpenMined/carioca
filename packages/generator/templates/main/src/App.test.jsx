@@ -7,7 +7,9 @@ test('Homepage should have title', () => {
   const testRenderer = renderer.create(<App />);
   const rootElem = testRenderer.root;
 
-  const pageTitle = rootElem.findByProps({ className: 'home-title' }).children.join('');
+  const pageTitle = rootElem
+    .findByProps({ className: 'home-title' })
+    .children.join('');
 
-  expect(pageTitle).toEqual('Welcome to %APP-NAME%!');
+  expect(pageTitle).toEqual('Welcome to Carioca Test App!');
 });

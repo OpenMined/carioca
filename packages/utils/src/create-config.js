@@ -69,7 +69,7 @@ module.exports = (config) => {
     : setServerOutput(config.paths, vars);
   const resolves = setResolves(config.paths);
   const envs = setEnvironmentVariables(config.paths, vars);
-  const javascript = compileJSAndTS(config.paths);
+  const javascript = compileJSAndTS(config.paths, vars);
   const css = compileCSS(vars);
   const csv = compileCSV();
   const staticAssets = compileStaticAssets();

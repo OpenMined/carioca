@@ -1,5 +1,8 @@
 module.exports = {
   /* CUSTOM JEST HERE */
+  transform: {
+    '^.+\\.[t|j]sx?$': ['babel-jest', { configFile: null }]
+  },
   moduleDirectories: ['node_modules'],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   testEnvironment: 'node',

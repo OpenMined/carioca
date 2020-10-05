@@ -11,12 +11,12 @@ const PORT = process.env.PORT;
 
 const createServer = () => {
   const template = fs.readFileSync(process.env.HTML_TEMPLATE, {
-    encoding: 'utf-8'
+    encoding: 'utf-8',
   });
 
   const assets = JSON.parse(
     fs.readFileSync(process.env.ASSETS_MANIFEST, {
-      encoding: 'utf-8'
+      encoding: 'utf-8',
     })
   );
 
@@ -34,7 +34,7 @@ const createServer = () => {
       if (context.url) {
         res.redirect(context.url);
       } else {
-        let html = caipirinha(template, assets, markup);
+        const html = caipirinha(template, assets, markup);
 
         res.status(200).send(html);
       }
