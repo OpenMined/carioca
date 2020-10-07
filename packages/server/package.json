@@ -21,7 +21,7 @@
     "server-side-rendering",
     "single-page-app"
   ],
-  "main": "dist/server.js",
+  "main": "dist/index.js",
   "scripts": {
     "compile": "webpack --config webpack.config.js"
   },

@@ -30,7 +30,5 @@ module.exports = (serverConfig) => {
     }
   });
 
-  if (fs.existsSync(bundlePath)) {
-    nodemon({ script: bundlePath, watch: [bundlePath] });
-  }
+  nodemon({ script: bundlePath, watch: [bundlePath] });
 };

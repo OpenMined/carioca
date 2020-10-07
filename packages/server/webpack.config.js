@@ -17,9 +17,9 @@ module.exports = () => {
   const context = setContext();
   const target = setTarget('node');
   const mode = setMode('production');
-  const entries = setEntry('./server.js');
+  const entries = setEntry('./index.js');
   const output = setOutput({
-    filename: 'server.js',
+    filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'commonjs2',
   });
